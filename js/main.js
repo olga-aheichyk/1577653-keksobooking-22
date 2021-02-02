@@ -1,45 +1,34 @@
-const getRandomInteger = function (firstNumber, secondNumber) {
-  if (Math.sign(firstNumber) >= 0 && Math.sign(secondNumber) >= 0) {
-    if (firstNumber > secondNumber) {
-      let min = secondNumber;
-      let max = firstNumber;
-
-      let randomNumber = Math.random() * (max - min) + min;
-      return Math.floor(randomNumber);
-    }
-
-    let min = firstNumber;
-    let max = secondNumber;
-
+/**
+ * Функция получения случайного целого числа из диапазона включительно
+ * @param {number} min — минимальное значение
+ * @param {number} max — максимальное значение
+ * @return {number|false} — случайное число
+ */
+const getRandomInteger = function (min, max) {
+  if (max >= min && min >= 0) {
     let randomNumber = Math.random() * (max - min) + min;
     return Math.floor(randomNumber);
   }
 
-  return 'Error! Можно использовать только числа больше либо равные 0';
+  return 'Error! Можно использовать только числа больше либо равные 0. \n Первое число не может быть больше второго.';
 }
 
-getRandomInteger(1, 3);
+getRandomInteger(4, 9);
 
-const getRandomFloatingPointNumber = function(firstNumber, secondNumber, floatingPointsCount) {
-  if (Math.sign(firstNumber) >= 0 && Math.sign(secondNumber) >= 0 && Math.sign(floatingPointsCount) >= 0) {
-    if (firstNumber > secondNumber) {
-      let min = secondNumber;
-      let max = firstNumber;
-
-      let randomNumber = Math.random() * (max - min) + min;
-      return randomNumber.toFixed(floatingPointsCount);
-    }
-
-    let min = firstNumber;
-    let max = secondNumber;
-
+/**
+ * Функция получения случайного числа с плавающей точкой из диапазона включительно
+ * @param {number} min — минимальное значение
+ * @param {number} max — максимальное значение
+ * @param {number} floatingPointsCount — количество знаков после запятой
+ * @return {number|false} — случайное число
+ */
+const getRandomFloatingPointNumber = function(min, max, floatingPointsCount = 2) {
+  if (max >= min && min >= 0) {
     let randomNumber = Math.random() * (max - min) + min;
     return randomNumber.toFixed(floatingPointsCount);
   }
 
-  return 'Error! Можно использовать только числа больше либо равные 0';
+  return 'Error! Можно использовать только числа больше либо равные 0. \n Первое число не может быть больше второго.';
 }
 
-getRandomFloatingPointNumber(1.1, 1.2, 3)
-
-//console.log(getRandomFloatingPointNumber(1, 6, 2));
+getRandomFloatingPointNumber(1.2, 2.1, 3);
