@@ -7,12 +7,10 @@
  */
 const getRandomInteger = function (min, max) {
   if (max >= min && min >= 0) {
-    // let randomNumber = Math.random() * (max - min) + min;
-    // return Math.floor(randomNumber);
-
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min; // Максимум и минимум включаются MDN
+    let randomNumber = Math.random() * (max - min + 1) + min;
+    return Math.floor(randomNumber);
   }
 
   return 'Error! Можно использовать только числа больше либо равные 0. \n Первое число не может быть больше второго.';
@@ -28,7 +26,7 @@ const getRandomInteger = function (min, max) {
 const getRandomFloatingPointNumber = function(min, max, floatingPointsCount = 2) {
   if (max >= min && min >= 0) {
     let randomNumber = Math.random() * (max - min) + min;
-    return randomNumber.toFixed(floatingPointsCount);
+    return Number(randomNumber.toFixed(floatingPointsCount));
   }
 
   return 'Error! Можно использовать только числа больше либо равные 0. \n Первое число не может быть больше второго.';
@@ -36,9 +34,13 @@ const getRandomFloatingPointNumber = function(min, max, floatingPointsCount = 2)
 
 /*
 Нужно получить массив из 10 случайно сгенерированных объектов:
-[{}, {}, ... {}] - ?
-const cards = [];
-const cardsCount = 10;
+const cardsData = [{},{}, ... {}] - ?
+const CARDS_COUNT = 10;
+
+const makeCards = function(CARDS_COUNT) {
+  ...
+  return cards;
+}
 
 {} - структура:
   1. const author = {
@@ -67,100 +69,89 @@ const cardsCount = 10;
   }
 */
 
+const TYPE = ['palace', 'flat', 'house', 'bungalow'];
+const CHECKIN_OUT = ['12:00', '13:00', '14:00'];
+const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']
+
+const CARDS_COUNT = 10;
+
+/**
+ * Функция получения случайного элемента из массива строк
+ * @param {array} array — исходный массив строк
+ * @return {string} — случайная строка
+ */
+const getRandomElementFromArray = function (array) {
+  return array[getRandomInteger(0, array.length - 1)];
+}
+
 /**
  * Функция получения массива случайной длины из массива строк
  * @param {array} array — исходный массив строк
  * @param {number} arrayCount — длина случайного массива
- * @param {number} randomIndex — случайный порядковый номер элемента в исходном массиве
- * @param {array} randomIndexesArray — массив из порядковых номеров элементов в исходном массиве, которые не должны повторяться
- * @return {array} randomArray — массив случайной длины
+ * @return {array} — полученный массив случайной длины
  */
+const makeRandomArray = function(array) {
+  // перемешаем исходный массив строк
+  array.sort(() => Math.random() - 0.5);
 
+  // сгенерируем случайную длину массива
+  const arrayCount = getRandomInteger(1, array.length);
 
-// const getRandomArray = function(array) {
-//   const arrayCount = getRandomInteger(1, array.length);
-//   let randomArray = new Array(arrayCount);
-//   const randomIndex = getRandomInteger(0, array.length - 1)
-//   let randomIndexesArray = [];
-
-//   while (randomIndexesArray.length < arrayCount) {
-//     if (randomIndexesArray.indexOf(randomIndex) === -1) {
-//       randomIndexesArray.push(randomIndex);
-//     }
-//   }
-
-//   return randomIndexesArray
-//   }
-
-// randomArray[i] = array[randomIndex];
-// return randomArray;
-
-
-
-
-
-const TYPE = ['palace', 'flat', 'house', 'bungalow'];
-const CHECKIN = ['12:00', '13:00', '14:00'];
-const CHECKOUT = ['12:00', '13:00', '14:00'];
-//const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-
-// console.log(getRandomArray(FEATURES))
-
-// const randomTypeIndex = getRandomInteger(0, TYPE.length - 1);
-// console.log(randomTypeIndex);
-
-// const randomCheckinIndex = getRandomInteger(0, CHECKIN.length - 1);
-// console.log(randomCheckinIndex);
-
-// const randomCheckoutIndex = getRandomInteger(0, CHECKOUT.length - 1);
-// console.log(randomCheckoutIndex);
-
-const getRandomArrayElement = function (array) {
-  return array[getRandomInteger(0, array.length - 1)];
+  // обрежем исходный массив до необходимой длины
+  let randomArray = array.slice(0, arrayCount);
+  return randomArray;
 }
 
-
-// console.log(getRandomArrayElement(TYPE));
-// console.log(getRandomArrayElement(CHECKIN));
-// console.log(getRandomArrayElement(CHECKOUT));
-
+/**
+ * Функция генерации тестовой карточки объявления
+ * @return {object} — карточка объявления
+ */
 const createCard = function () {
+  const xRandomValue = getRandomFloatingPointNumber(35.65000, 35.70000, 5);
+  const yRandomValue = getRandomFloatingPointNumber(139.70000, 139.80000, 5);
   return {
-    avatar: 'img/avatars/user0' + getRandomInteger(0, 8) + '.png',
+    avatar: `img/avatars/user0${getRandomInteger(0, 8)}.png`,
     offer: {
       title: 'Суперпредложение',
-      //address: '{{location.x}}, {{location.y}}',
+      address: `${xRandomValue}, ${yRandomValue}`,
       price: getRandomInteger(1, 1000),
-      type: getRandomArrayElement(TYPE),
+      type: getRandomElementFromArray(TYPE),
       rooms: getRandomInteger(1, 10),
       guests: getRandomInteger(1, 20),
-      checkin: getRandomArrayElement(CHECKIN),
-      checkout: getRandomArrayElement(CHECKOUT),
-      //features: random, some ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
+      checkin: getRandomElementFromArray(CHECKIN_OUT),
+      checkout: getRandomElementFromArray(CHECKIN_OUT),
+      features: makeRandomArray(FEATURES),
       description: 'Уютное жильё',
-      //photos: random, some ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'],
+      photos: makeRandomArray(PHOTOS),
     },
     location: {
-      x: getRandomFloatingPointNumber(35.65000, 35.70000, 5),
-      y: getRandomFloatingPointNumber(139.70000, 139.80000, 5),
+      x: xRandomValue,
+      y: yRandomValue,
     },
   }
 }
 
-//const card = createCard();
-// const {avatar, offer, location} = card;
+/**
+ * Функция генерации моков (тестовые данные, для того, что бы написать основную логику приложения)
+ * @param {number} CARDS_COUNT — количество карточек в массиве
+ * @return {array} — тестовый массив карточек объявлений
+ */
+const makeCards = function(count) {
+  let cards = new Array(count);
 
-const cardsCount = 10;
+  for (let i = 0; i < count; i++) {
+    const card = createCard();
+    cards[i] = card;
+  }
+  // способ из лекции
+  // const cards = new Array(CARDS_COUNT).fill(null).map(() => createCard());
 
-let cards = new Array(cardsCount);
-for (let i = 0; i < cardsCount; i++) {
-  const card = createCard();
-  cards[i] = card;
+  return cards;
 }
 
-// способ из лекции
-// const cards = new Array(cardsCount).fill(null).map(() => createCard());
-
-// console.log(cards);
+// const cardsData = makeCards(CARDS_COUNT);
+// console.log(cardsData);
+makeCards(CARDS_COUNT);
 
 
