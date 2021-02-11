@@ -1,3 +1,4 @@
-'use strict';
-import './make-cards.js';
+import {CARDS_COUNT, makeCards} from './make-cards.js';
+makeCards(CARDS_COUNT);
+
 
