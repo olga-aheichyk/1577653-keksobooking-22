@@ -92,6 +92,4 @@ const makeCards = function(count) {
   return cards;
 }
 
-// const cardsData = makeCards(CARDS_COUNT);
-// console.log(cardsData);
-makeCards(CARDS_COUNT);
+export {CARDS_COUNT, makeCards};
