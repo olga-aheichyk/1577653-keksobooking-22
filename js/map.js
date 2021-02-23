@@ -24,65 +24,58 @@ const makeInteractiveElementsActive = function (object, className) {
   return object;
 }
 
+const TOKYO_CENTER = {
+  x: 35.6894,
+  y: 139.692,
+};
+
+const inputAddress = document.querySelector('#address');
+
 const map = L.map('map-canvas')
   .on('load', () => {
     makeInteractiveElementsActive(adForm, 'ad-form--disabled');
     makeInteractiveElementsActive(mapFilter, 'map__filters--disabled');
+    inputAddress.value = `Координаты: ${TOKYO_CENTER.x}, ${TOKYO_CENTER.y}`;
   })
   .setView({
-    lat: 35.6894,
-    lng: 139.692,
+    lat: TOKYO_CENTER.x,
+    lng: TOKYO_CENTER.y,
   }, 10);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },)
+  })
   .addTo(map);
 
-const markerIcon = L.icon({
-  iconUrl: 'leaflet/images/marker-icon.png',
-  iconSize: [25, 41],
-  iconAnchor: [13, 41],
+const mainMarkerIcon = L.icon({
+  iconUrl: 'leaflet/images/marker-icon-2x.png',
+  iconSize: [50, 82],
+  iconAnchor: [25, 82],
 });
 
 
-const marker = L.marker(
-  {
-    lat: 35.78769,
-    lng: 139.73997,
-  },
-  {
-    draggable: true,
-    icon: markerIcon,
-  },
-);
-
-marker.on('moveend', (evt) => {
-  const point = {xAddressValue: evt.target.getLatLng().lat,
-  yAddressValue: evt.target.getLatLng().lng};
-  return point;
-});
-
-const createPopupCard = (point) => {
-  const popupElement = createCardLayout(mockObjects[0]);
-  popupElement.querySelector('.popup__text--address').textContent = `Координаты: ${point.x}, ${point.y}`;
-
-  return popupElement;
-}
-
-marker
-.addTo(map)
-.bindPopup(
-  createPopupCard(point),
+const mainMarker = L.marker({
+  lat: TOKYO_CENTER.x,
+  lng: TOKYO_CENTER.y,
+},
 {
-  keepInView: true,
+  draggable: true,
+  icon: mainMarkerIcon,
 },
 );
 
+mainMarker
+  .addTo(map);
+
+mainMarker.on('moveend', (evt) => {
+  inputAddress.value = `Координаты: ${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+});
 
 // marker.remove();
+
+export {map};
 
 
 

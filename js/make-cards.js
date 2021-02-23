@@ -16,7 +16,7 @@ const createCard = function () {
   const xRandomValue = getRandomFloatingPointNumber(35.65000, 35.70000, 5);
   const yRandomValue = getRandomFloatingPointNumber(139.70000, 139.80000, 5);
   return {
-    avatar: `img/avatars/user0${getRandomInteger(0, 8)}.png`,
+    avatar: `img/avatars/user0${getRandomInteger(1, 8)}.png`,
     offer: {
       title: 'Суперпредложение',
       address: `${xRandomValue}, ${yRandomValue}`,
