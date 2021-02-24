@@ -1,3 +1,4 @@
+/* global L:readonly */
 import {CARDS_COUNT, makeCards} from './make-cards.js';
 import {createCardLayout} from './create-card-layout.js';
 import './map.js';

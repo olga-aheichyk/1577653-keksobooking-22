@@ -1,3 +1,4 @@
+/* global L:readonly */
 const makeInteractiveElementsInactive = function (object, className) {
   object.classList.add(className);
 
