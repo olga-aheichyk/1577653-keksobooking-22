@@ -19,6 +19,10 @@ const createCardLayout = function(object) {
   cardArticle.querySelector('.popup__description').textContent = object.offer.description;
 
   const articleFeatures = cardArticle.querySelector('.popup__features');
+
+  if (object.offer.features.length === 0) {
+    articleFeatures.style.display = 'none';
+  }
   articleFeatures.textContent = '';
   let featuresHtmlLayout = object.offer.features
     .map(item => `<li class="popup__feature popup__feature--${item}"></li>`)
@@ -26,6 +30,11 @@ const createCardLayout = function(object) {
   articleFeatures.innerHTML = featuresHtmlLayout;
 
   const articlePhotos = cardArticle.querySelector('.popup__photos');
+  
+  if (object.offer.photos.length === 0) {
+    articlePhotos.style.display = 'none';
+  }
+
   const articlePhoto = cardArticle.querySelector('.popup__photo');
   articlePhoto.src = object.offer.photos[0];
 
