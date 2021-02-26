@@ -57,21 +57,38 @@ const makeRandomArray = function(array) {
   return randomArray;
 }
 
+/**
+ * Функция перевода интерактивных элементов объекта в неактивное состояние
+ * @param {object} object — объект, элементы которого нужно перевести в неактивное состояние
+ * @param {string} className — CSS-класс неактивности объекта
+ * @param {HTMLCollection} interactiveElements — коллекция элементов объекта
+ */
+const makeInteractiveElementsInactive = function (object, className) {
+  object.classList.add(className);
 
-/* Второй способ
-
-const makeRandomArray = function(array) {
-  // перемешаем исходный массив строк
-  array.sort(() => Math.random() - 0.5);
-
-  // сгенерируем случайную длину массива
-  const arrayCount = getRandomInteger(1, array.length);
-
-  // обрежем исходный массив до необходимой длины
-  let randomArray = array.slice(0, arrayCount);
-  return randomArray;
+  let interactiveElements = object.elements;
+  for (let i = 0; i < interactiveElements.length; i++) {
+    interactiveElements[i].setAttribute('disabled', 'disabled');
+  }
 }
-*/
+
+/**
+  * Функция перевода интерактивных элементов объекта в активное состояние
+  * @param {object} object — объект, элементы которого нужно перевести в активное состояние
+  * @param {string} className — CSS-класс неактивности объекта
+  * @param {HTMLCollection} interactiveElements — коллекция элементов объекта
+  */
+const makeInteractiveElementsActive = function (object, className) {
+  object.classList.remove(className);
+
+  let interactiveElements = object.elements;
+  for (let i = 0; i < interactiveElements.length; i++) {
+    interactiveElements[i].removeAttribute('disabled', 'disabled');
+  }
+}
+
+
 
 export {getRandomInteger, getRandomFloatingPointNumber,
-  getRandomElementFromArray, makeRandomArray};
+  getRandomElementFromArray, makeRandomArray,
+  makeInteractiveElementsInactive, makeInteractiveElementsActive};
