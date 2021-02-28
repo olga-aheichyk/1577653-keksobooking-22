@@ -2,28 +2,33 @@
 import {makeInteractiveElementsInactive,
   makeInteractiveElementsActive} from './util.js';
 
-const adForm = document.querySelector('.ad-form');
-const mapFilter = document.querySelector('.map__filters');
-const TOKYO_CENTER = {
-  x: 35.6894,
-  y: 139.692,
+const TokyoCenter = {
+  X: 35.6894,
+  Y: 139.692,
 };
 const MAP_ZOOM = 12;
-const inputAddress = adForm.querySelector('#address');
+const ADDRESS_DIGITS_AFTER_DECIMAL = 5;
+const MainPinParameters = {
+  X: 50,
+  Y: 82,
+};
 
-
+const adForm = document.querySelector('.ad-form');
+const mapFilter = document.querySelector('.map__filters');
 makeInteractiveElementsInactive(adForm, 'ad-form--disabled');
 makeInteractiveElementsInactive(mapFilter, 'map__filters--disabled');
+
+const inputAddress = adForm.querySelector('#address');
 
 const map = L.map('map-canvas')
   .on('load', () => {
     makeInteractiveElementsActive(adForm, 'ad-form--disabled');
     makeInteractiveElementsActive(mapFilter, 'map__filters--disabled');
-    inputAddress.value = `${TOKYO_CENTER.x}, ${TOKYO_CENTER.y}`;
+    inputAddress.value = `${TokyoCenter.X}, ${TokyoCenter.Y}`;
   })
   .setView({
-    lat: TOKYO_CENTER.x,
-    lng: TOKYO_CENTER.y,
+    lat: TokyoCenter.X,
+    lng: TokyoCenter.Y,
   }, MAP_ZOOM);
 
 L.tileLayer(
@@ -33,9 +38,35 @@ L.tileLayer(
   })
   .addTo(map);
 
-// marker.remove();
+// Ставим главный пин на карту
 
-export {map, TOKYO_CENTER, inputAddress};
+const mainIcon = L.icon({
+  iconUrl: 'leaflet/images/marker-icon-2x.png',
+  iconSize: [MainPinParameters.X, MainPinParameters.Y],
+  iconAnchor: [(MainPinParameters.X) / 2, MainPinParameters.Y],
+});
+
+const mainPin = L.marker({
+  lat: TokyoCenter.X,
+  lng: TokyoCenter.Y,
+},
+{
+  draggable: true,
+  icon: mainIcon,
+},
+);
+
+mainPin.addTo(map);
+
+// При перемещении главного пина меняется значение поля ввода адреса
+
+mainPin.on('moveend', (evt) => {
+  inputAddress.value = `${evt.target.getLatLng().lat.toFixed(ADDRESS_DIGITS_AFTER_DECIMAL)},
+  ${evt.target.getLatLng().lng.toFixed(ADDRESS_DIGITS_AFTER_DECIMAL)}`;
+});
+
+
+export {map};
 
 
 

@@ -21,7 +21,7 @@ const createCardLayout = function(object) {
   const articleFeatures = cardArticle.querySelector('.popup__features');
 
   if (object.offer.features.length === 0) {
-    articleFeatures.style.display = 'none';
+    articleFeatures.remove();
   }
   articleFeatures.textContent = '';
   let featuresHtmlLayout = object.offer.features
@@ -30,9 +30,9 @@ const createCardLayout = function(object) {
   articleFeatures.innerHTML = featuresHtmlLayout;
 
   const articlePhotos = cardArticle.querySelector('.popup__photos');
-  
+
   if (object.offer.photos.length === 0) {
-    articlePhotos.style.display = 'none';
+    articlePhotos.remove();
   }
 
   const articlePhoto = cardArticle.querySelector('.popup__photo');
