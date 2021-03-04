@@ -67,6 +67,7 @@ const makeInteractiveElementsInactive = function (object, className) {
   object.classList.add(className);
 
   let interactiveElements = object.elements;
+  // interactiveElements.forEach((item) => {item.setAttribute('disabled', 'disabled');})
   for (let i = 0; i < interactiveElements.length; i++) {
     interactiveElements[i].setAttribute('disabled', 'disabled');
   }
@@ -83,7 +84,7 @@ const makeInteractiveElementsActive = function (object, className) {
 
   let interactiveElements = object.elements;
   for (let i = 0; i < interactiveElements.length; i++) {
-    interactiveElements[i].removeAttribute('disabled', 'disabled');
+    interactiveElements[i].removeAttribute('disabled');
   }
 }
 

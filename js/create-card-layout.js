@@ -21,30 +21,34 @@ const createCardLayout = function(object) {
   const articleFeatures = cardArticle.querySelector('.popup__features');
 
   if (object.offer.features.length === 0) {
-    articleFeatures.style.display = 'none';
+    articleFeatures.remove();
   }
-  articleFeatures.textContent = '';
-  let featuresHtmlLayout = object.offer.features
-    .map(item => `<li class="popup__feature popup__feature--${item}"></li>`)
-    .join('\n');
-  articleFeatures.innerHTML = featuresHtmlLayout;
+  else {
+    articleFeatures.textContent = '';
+    let featuresHtmlLayout = object.offer.features
+      .map(item => `<li class="popup__feature popup__feature--${item}"></li>`)
+      .join('\n');
+    articleFeatures.innerHTML = featuresHtmlLayout;
+  }
 
   const articlePhotos = cardArticle.querySelector('.popup__photos');
-  
+
   if (object.offer.photos.length === 0) {
-    articlePhotos.style.display = 'none';
+    articlePhotos.remove();
   }
+  else {
+    const articlePhoto = cardArticle.querySelector('.popup__photo');
+    articlePhoto.src = object.offer.photos[0];
 
-  const articlePhoto = cardArticle.querySelector('.popup__photo');
-  articlePhoto.src = object.offer.photos[0];
-
-  if (object.offer.photos.length > 1) {
-    for (let i = 1; i < object.offer.photos.length; i++) {
-      const nextArticlePhoto = articlePhoto.cloneNode(true);
-      nextArticlePhoto.src = object.offer.photos[i];
-      articlePhotos.appendChild(nextArticlePhoto);
+    if (object.offer.photos.length > 1) {
+      for (let i = 1; i < object.offer.photos.length; i++) {
+        const nextArticlePhoto = articlePhoto.cloneNode(true);
+        nextArticlePhoto.src = object.offer.photos[i];
+        articlePhotos.appendChild(nextArticlePhoto);
+      }
     }
   }
+
   return cardArticle;
 }
 
