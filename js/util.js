@@ -88,8 +88,30 @@ const makeInteractiveElementsActive = function (object, className) {
   }
 }
 
+/**
+  * Функция создания сщщбщения об ошибке
+  * @param {object} message — текст сообщения об ошибке
+  */
+const showAlert = function(message) {
+  const adTitle = document.querySelector('.notice__title')
+  const alertContainer = document.createElement('div');
+  alertContainer.style.padding = '30px';
+  alertContainer.style.fontSize = '40px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+
+  alertContainer.textContent = message;
+
+  adTitle.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, 5000);
+}
+
 
 
 export {getRandomInteger, getRandomFloatingPointNumber,
   getRandomElementFromArray, makeRandomArray,
-  makeInteractiveElementsInactive, makeInteractiveElementsActive};
+  makeInteractiveElementsInactive, makeInteractiveElementsActive,
+  showAlert};

@@ -6,11 +6,11 @@ const TokyoCenter = {
   X: 35.6894,
   Y: 139.692,
 };
-const MAP_ZOOM = 12;
+const MAP_ZOOM = 10;
 const ADDRESS_DIGITS_AFTER_DECIMAL = 5;
 const MainPinParameters = {
-  X: 50,
-  Y: 82,
+  X: 51,
+  Y: 51,
 };
 
 const adForm = document.querySelector('.ad-form');
@@ -41,7 +41,7 @@ L.tileLayer(
 // Ставим главный пин на карту
 
 const mainIcon = L.icon({
-  iconUrl: 'leaflet/images/marker-icon-2x.png',
+  iconUrl: 'img/main-pin.svg',
   iconSize: [MainPinParameters.X, MainPinParameters.Y],
   iconAnchor: [(MainPinParameters.X) / 2, MainPinParameters.Y],
 });
