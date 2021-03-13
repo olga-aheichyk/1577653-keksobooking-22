@@ -1,14 +1,12 @@
 /* global L:readonly */
 import {makeInteractiveElementsInactive,
-  makeInteractiveElementsActive} from './util.js';
+  makeInteractiveElementsActive,
+  TokyoCenter} from './util.js';
 
-const TokyoCenter = {
-  X: 35.6894,
-  Y: 139.692,
-};
-const MAP_ZOOM = 10;
+
+const MAP_ZOOM = 9;
 const ADDRESS_DIGITS_AFTER_DECIMAL = 5;
-const MainPinParameters = {
+const PinParameters = {
   X: 51,
   Y: 51,
 };
@@ -42,8 +40,8 @@ L.tileLayer(
 
 const mainIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
-  iconSize: [MainPinParameters.X, MainPinParameters.Y],
-  iconAnchor: [(MainPinParameters.X) / 2, MainPinParameters.Y],
+  iconSize: [PinParameters.X, PinParameters.Y],
+  iconAnchor: [(PinParameters.X) / 2, PinParameters.Y],
 });
 
 const mainPin = L.marker({
@@ -66,7 +64,9 @@ mainPin.on('moveend', (evt) => {
 });
 
 
-export {map};
+export { map,
+  TokyoCenter,
+  PinParameters };
 
 
 

@@ -1,34 +1,18 @@
 /* global L:readonly */
 import {createCardLayout} from './create-card-layout.js';
-
-const AdPinParameters = {
-  X: 51,
-  Y: 51,
-};
-
-/**
-  * Функция создания всплывающей карточки объявления
-  * @param {object} object — объект, содержащий информацию об объявлении
-  * @param {object} popupElement — DOM-элемент всплывающей карточки объявления
-  */
-const createPopupCard = (object) => {
-  const popupElement = createCardLayout(object);
-  popupElement.querySelector('.popup__text--address').textContent = `Координаты: ${object.location.lat}, ${object.location.lng}`;
-
-  return popupElement;
-}
+import {PinParameters} from './map.js'
 
 /**
   * Функция создания на карте пинов объявлениЙ, при клике на которые открывается всплывающая карточка отдельного объявления
   * @param {object} map — объект, содержащий информацию об объявлении
   * @param {array} pins — массив объектов объявлений для создания пинов на карте
   */
-const renderPins = function (map, pins) {
+const renderPins = function (pins, map) {
   pins.forEach((pin) => {
     const icon = L.icon({
       iconUrl: 'img/pin.svg',
-      iconSize: [AdPinParameters.X, AdPinParameters.Y],
-      iconAnchor: [(AdPinParameters.X) / 2, AdPinParameters.Y],
+      iconSize: [PinParameters.X, PinParameters.Y],
+      iconAnchor: [(PinParameters.X) / 2, PinParameters.Y],
     });
 
     const adPin = L.marker({
@@ -42,7 +26,7 @@ const renderPins = function (map, pins) {
 
     adPin
       .addTo(map)
-      .bindPopup(createPopupCard(pin),
+      .bindPopup(createCardLayout(pin),
         {
           keepInView: true,
         },
@@ -50,5 +34,5 @@ const renderPins = function (map, pins) {
   })
 }
 
-export {renderPins};
+export { renderPins };
 

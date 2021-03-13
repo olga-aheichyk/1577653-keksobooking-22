@@ -7,30 +7,26 @@ import { map } from './map.js';
  * @param {map} object — интерактивная карта, необходимая для обработки полученных данных
  */
 
-const getData = function (onSuccess) {
+const getData = function (onSuccess, onError) {
   fetch ('https://22.javascript.pages.academy/keksobooking/data')
-    .then((response) => response.json())
-    .then((adds) => {
-      onSuccess(map, adds);
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      else {
+        onError('Данные о доступных объявлениях не могут быть загружены. Перезагрузите страницу или зайдите на сайт позже');
+      }
     })
+    .then((ads) => {
+      onSuccess(ads, map);
+    })
+    .catch(() => {
+      onError('Данные о доступных объявлениях не могут быть загружены. Перезагрузите страницу или зайдите на сайт позже');
+    })
+
+  // при ошибке загрузки отрабатывают 2 onError - показывается сразу 2 сообщения об ошибке загрузки
+  // как сделать, чтобы срабатывало одно???
 }
-
-// .then((response) => {
-//   if (response.ok) {
-//     return response.json();
-//   }
-
-//   else {
-//     onError();
-//   }
-// })
-//   .then((adds) => {
-//     onSuccess(map, adds);
-//   })
-//   .catch(() => {
-//     onError();
-//   })
-
 
 /**
  * Функция отправления POST-запроса на сервер для отправки введенных пользователем данных
@@ -43,10 +39,6 @@ const sendData = function (onSuccess, onError, formData) {
     'https://22.javascript.pages.academy/keksobooking',
     {
       method: 'POST',
-      headers:
-      {
-        'Content-Type': 'multipart/form-data',
-      },
       body: formData,
     },
   )
@@ -63,4 +55,4 @@ const sendData = function (onSuccess, onError, formData) {
     })
 }
 
-export {getData, sendData}
+export { getData, sendData }
