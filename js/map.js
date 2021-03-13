@@ -1,16 +1,14 @@
 /* global L:readonly */
 import {makeInteractiveElementsInactive,
-  makeInteractiveElementsActive} from './util.js';
+  makeInteractiveElementsActive,
+  TokyoCenter} from './util.js';
 
-const TokyoCenter = {
-  X: 35.6894,
-  Y: 139.692,
-};
-const MAP_ZOOM = 12;
+
+const MAP_ZOOM = 9;
 const ADDRESS_DIGITS_AFTER_DECIMAL = 5;
-const MainPinParameters = {
-  X: 50,
-  Y: 82,
+const PinParameters = {
+  X: 51,
+  Y: 51,
 };
 
 const adForm = document.querySelector('.ad-form');
@@ -41,9 +39,9 @@ L.tileLayer(
 // Ставим главный пин на карту
 
 const mainIcon = L.icon({
-  iconUrl: 'leaflet/images/marker-icon-2x.png',
-  iconSize: [MainPinParameters.X, MainPinParameters.Y],
-  iconAnchor: [(MainPinParameters.X) / 2, MainPinParameters.Y],
+  iconUrl: 'img/main-pin.svg',
+  iconSize: [PinParameters.X, PinParameters.Y],
+  iconAnchor: [(PinParameters.X) / 2, PinParameters.Y],
 });
 
 const mainPin = L.marker({
@@ -66,7 +64,9 @@ mainPin.on('moveend', (evt) => {
 });
 
 
-export {map};
+export { map,
+  TokyoCenter,
+  PinParameters };
 
 
 

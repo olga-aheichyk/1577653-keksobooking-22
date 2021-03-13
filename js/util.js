@@ -1,3 +1,8 @@
+const TokyoCenter = {
+  X: 35.6894,
+  Y: 139.692,
+};
+
 /**
  * Функция получения случайного целого числа из диапазона включительно
  * @param {number} min — минимальное значение
@@ -88,8 +93,67 @@ const makeInteractiveElementsActive = function (object, className) {
   }
 }
 
+/**
+  * Функция создания сообщения об ошибке
+  * @param {string} message — текст сообщения об ошибке
+  */
+const showAlert = function(message) {
+  const adTitle = document.querySelector('.notice__title')
+  const alertContainer = document.createElement('div');
+  alertContainer.style.padding = '30px';
+  alertContainer.style.fontSize = '40px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+
+  alertContainer.textContent = message;
+
+  adTitle.append(alertContainer);
+
+  const ALERT_SHOW_TIME = 5000;
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
+}
+
+/**
+  * Функция проверки на нажатие клавиши 'Esc'
+  */
+const isEscEvent = function (evt) {
+  return evt.key === 'Escape' || evt.key === 'Esc';
+}
+
+/**
+  * Функция закрытия сообщения об отправке формы
+  * @param {object} message — DOM-элемент сообщения об отправке формы
+  */
+const closeMessage = function (message) {
+  document.addEventListener('keydown', function (evt) {
+    if (isEscEvent(evt)) {
+      message.remove();
+    }
+  })
+
+  document.addEventListener('click', function () {
+    message.remove();
+  })
+}
+
+/**
+ * Функция очистки полей ввода (после успешной отправки формы или нажатия на кнопку "Очистить форму")
+ */
+const clearFormAfterResetOrSubmit = function (form) {
+  form.reset();
+  document.querySelector('#address').value = `${TokyoCenter.X}, ${TokyoCenter.Y}`
+}
 
 
-export {getRandomInteger, getRandomFloatingPointNumber,
+
+
+export { TokyoCenter,
+  getRandomInteger, getRandomFloatingPointNumber,
   getRandomElementFromArray, makeRandomArray,
-  makeInteractiveElementsInactive, makeInteractiveElementsActive};
+  makeInteractiveElementsInactive, makeInteractiveElementsActive,
+  showAlert,
+  closeMessage, clearFormAfterResetOrSubmit
+};

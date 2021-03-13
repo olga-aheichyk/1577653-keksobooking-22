@@ -1,7 +1,7 @@
 import {getRandomInteger, getRandomFloatingPointNumber,
   getRandomElementFromArray, makeRandomArray} from './util.js';
 
-const TYPE = [{'palace': 'Дворец'}, {'flat': 'Квартира'}, {'house': 'Дом'}, {'bungalow': 'Бунгало'}];
+const TYPES = [{'palace': 'Дворец'}, {'flat': 'Квартира'}, {'house': 'Дом'}, {'bungalow': 'Бунгало'}];
 const CHECKIN_OUT = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']
@@ -16,12 +16,14 @@ const createCard = function () {
   const xRandomValue = getRandomFloatingPointNumber(35.65000, 35.70000, 5);
   const yRandomValue = getRandomFloatingPointNumber(139.70000, 139.80000, 5);
   return {
-    avatar: `img/avatars/user0${getRandomInteger(1, 8)}.png`,
+    author: {
+      avatar: `img/avatars/user0${getRandomInteger(1, 8)}.png`,
+    },
     offer: {
       title: 'Суперпредложение',
       address: `${xRandomValue}, ${yRandomValue}`,
       price: getRandomInteger(1, 1000),
-      type: getRandomElementFromArray(TYPE),
+      type: getRandomElementFromArray(TYPES),
       rooms: getRandomInteger(1, 10),
       guests: getRandomInteger(1, 20),
       checkin: getRandomElementFromArray(CHECKIN_OUT),
@@ -31,8 +33,8 @@ const createCard = function () {
       photos: makeRandomArray(PHOTOS),
     },
     location: {
-      x: xRandomValue,
-      y: yRandomValue,
+      lat: xRandomValue,
+      lng: yRandomValue,
     },
   }
 }

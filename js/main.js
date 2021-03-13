@@ -1,8 +1,10 @@
-import {CARDS_COUNT, makeCards} from './make-cards.js';
-import {map} from './map.js';
-import {renderPins} from './pins.js';
 import './form.js';
-import './check-form-validity.js'
+import './form-submit.js';
+import { renderPins } from './pins.js';
+import { getData } from './get-and-send-data.js';
+import { showAlert } from './util.js';
+import { formSubmitHandler } from './form-submit.js';
 
-const mockObjects = makeCards(CARDS_COUNT);
-renderPins(map, mockObjects);
+getData(renderPins, showAlert);
+
+formSubmitHandler();
