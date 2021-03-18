@@ -1,14 +1,20 @@
 /* global L:readonly */
 import {createCardLayout} from './create-card-layout.js';
-import {PinParameter} from './map.js'
+import {PinParameter} from './map.js';
+import {setHousingTypeChange} from './map-filter.js';
+
+const PINS_ON_MAP_COUNT = 10;
 
 /**
   * Функция создания на карте пинов объявлениЙ, при клике на которые открывается всплывающая карточка отдельного объявления
   * @param {object} map — объект, содержащий информацию об объявлении
   * @param {array} pins — массив объектов объявлений для создания пинов на карте
   */
+
+
 const renderPins = function (pins, map) {
-  pins.forEach((pin) => {
+  pins.slice(0, PINS_ON_MAP_COUNT)
+  .forEach((pin) => {
     const icon = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [PinParameter.X, PinParameter.Y],
@@ -31,7 +37,12 @@ const renderPins = function (pins, map) {
           keepInView: true,
         },
       );
+
+      setHousingTypeChange(pins, map, adPin);
   })
+
+
+
 }
 
 export { renderPins };

@@ -4,7 +4,7 @@ import { renderPins } from './pins.js';
 import { getData } from './get-and-send-data.js';
 import { showAlert } from './util.js';
 import { activateFormSubmitHandler } from './form-submit.js';
-import './map-filter.js'
+// import './map-filter.js'
 
 getData(renderPins, showAlert);
 

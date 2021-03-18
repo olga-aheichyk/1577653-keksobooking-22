@@ -67,26 +67,28 @@ const setHousingTypeChange = (cb) => {
   });
 };
 
-getData(renderPins; setHousingTypeChange; ... etc, showAlert);
-или в функции renderPins писать обработчики изменений фильтров
-или в функции getData ???
-
 */
 
-import {getData} from './get-and-send-data.js'
+import {renderPins} from './pins.js'
+
 
 const housingType = document.querySelector('#housing-type');
-const selectedHousingTypeOption = document.querySelector('#housing-type option[selected]');
+let filterPins = [];
 
-const setHousingTypeChange = function (cb) {
+const setHousingTypeChange = function (pins, map, adPin) {
   housingType.addEventListener('change', function (evt) {
     if (evt.target.value !== 'any') {
-      cb().filter((ad) => {
-        ad.offer.type === evt.target.value;
-        console.log();
-      })
+      adPin.remove();
+      filterPins = [];
+      for (let i=0; i < pins.length; i++) {
+        if (pins[i].offer.type === evt.target.value) {
+          filterPins.push(pins[i]);
+        }
+      }
     }
+
+    renderPins(filterPins, map);
   })
 }
 
-setHousingTypeChange(getData);
+export {setHousingTypeChange}
