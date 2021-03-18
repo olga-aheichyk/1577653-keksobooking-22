@@ -69,16 +69,17 @@ const createCardLayout = function({author, offer, location}) {
     // articleFeatures.innerHTML = featuresHtmlLayout;
 
     offer.features.map((item) => {
-        const liElement = document.createElement('li');
-        liElement.classList.add('popup__feature');
-        const specificClassOfLi = `popup__feature--${item}`
-        liElement.classList.add(specificClassOfLi);
-        return liElement;
-      })
+      const liElement = document.createElement('li');
+      liElement.classList.add('popup__feature');
+      const specificClassOfLi = `popup__feature--${item}`
+      liElement.classList.add(specificClassOfLi);
+      return liElement;
+    })
       .forEach((liElement) => {
         featuresFragment.appendChild(liElement);
       })
-      articleFeatures.appendChild(featuresFragment);
+
+    articleFeatures.appendChild(featuresFragment);
   }
 
   const articlePhotos = cardArticle.querySelector('.popup__photos');

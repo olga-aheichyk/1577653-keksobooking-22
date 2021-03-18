@@ -20,8 +20,8 @@ const getData = function (onSuccess, onError) {
     })
     .then(
       (ads) => {
-      onSuccess(ads, map);
-      }
+        onSuccess(ads, map);
+      },
     )
     .catch(() => {
       onError('Данные о доступных объявлениях не могут быть загружены. Перезагрузите страницу или зайдите на сайт позже');

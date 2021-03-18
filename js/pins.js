@@ -14,32 +14,32 @@ const PINS_ON_MAP_COUNT = 10;
 
 const renderPins = function (pins, map) {
   pins.slice(0, PINS_ON_MAP_COUNT)
-  .forEach((pin) => {
-    const icon = L.icon({
-      iconUrl: 'img/pin.svg',
-      iconSize: [PinParameter.X, PinParameter.Y],
-      iconAnchor: [(PinParameter.X) / 2, PinParameter.Y],
-    });
+    .forEach((pin) => {
+      const icon = L.icon({
+        iconUrl: 'img/pin.svg',
+        iconSize: [PinParameter.X, PinParameter.Y],
+        iconAnchor: [(PinParameter.X) / 2, PinParameter.Y],
+      });
 
-    const adPin = L.marker({
-      lat: pin.location.lat,
-      lng: pin.location.lng,
-    },
-    {
-      icon,
-    },
-    );
-
-    adPin
-      .addTo(map)
-      .bindPopup(createCardLayout(pin),
-        {
-          keepInView: true,
-        },
+      const adPin = L.marker({
+        lat: pin.location.lat,
+        lng: pin.location.lng,
+      },
+      {
+        icon,
+      },
       );
 
+      adPin
+        .addTo(map)
+        .bindPopup(createCardLayout(pin),
+          {
+            keepInView: true,
+          },
+        );
+
       setHousingTypeChange(pins, map, adPin);
-  })
+    })
 
 
 
