@@ -20,7 +20,7 @@ const createCardLayout = function({author, offer, location}) {
 
   const cardArticle = cardTemplateArticle.cloneNode(true);
 
-  // доделать remove при пустых значениях поля
+  // переделать remove при пустых значениях поля
   const articleAvatar = cardArticle.querySelector('.popup__avatar');
 
   if (isVoidElement(articleAvatar)) {
@@ -61,25 +61,24 @@ const createCardLayout = function({author, offer, location}) {
   }
   else {
     articleFeatures.textContent = '';
+    let featuresFragment = document.createDocumentFragment();
 
-    let featuresHtmlLayout = offer.features
-      .map(item => `<li class="popup__feature popup__feature--${item}"></li>`)
-      .join('\n');
-    articleFeatures.innerHTML = featuresHtmlLayout;
+    // let featuresHtmlLayout = offer.features
+    //   .map(item => `<li class="popup__feature popup__feature--${item}"></li>`)
+    //   .join('\n');
+    // articleFeatures.innerHTML = featuresHtmlLayout;
 
-
-    // Пыталась сделать без innerHTML, но так не работает.
-    // В чём здесь ошибка:
-
-    // offer.features.map((item) => {
-    //     const liElement = document.createElement('li');
-    //     const classOfLi = `popup__feature popup__feature--${item}`
-    //     liElement.classList.add(classOfLi);
-    //     return liElement;
-    //   })
-    //   .forEach((liElement) => {
-    //     articleFeatures.appendChild(liElement)
-    //   })
+    offer.features.map((item) => {
+        const liElement = document.createElement('li');
+        liElement.classList.add('popup__feature');
+        const specificClassOfLi = `popup__feature--${item}`
+        liElement.classList.add(specificClassOfLi);
+        return liElement;
+      })
+      .forEach((liElement) => {
+        featuresFragment.appendChild(liElement);
+      })
+      articleFeatures.appendChild(featuresFragment);
   }
 
   const articlePhotos = cardArticle.querySelector('.popup__photos');

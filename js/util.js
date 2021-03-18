@@ -3,6 +3,8 @@ const TokyoCenter = {
   Y: 139.692,
 };
 
+const ALERT_SHOW_TIME = 5000;
+
 /**
  * Функция получения случайного целого числа из диапазона включительно
  * @param {number} min — минимальное значение
@@ -108,8 +110,6 @@ const showAlert = function(message) {
   alertContainer.textContent = message;
 
   adTitle.append(alertContainer);
-
-  const ALERT_SHOW_TIME = 5000;
 
   setTimeout(() => {
     alertContainer.remove();
