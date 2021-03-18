@@ -85,9 +85,11 @@ const setHousingTypeChange = function (pins, map, adPin) {
           filterPins.push(pins[i]);
         }
       }
+      renderPins(filterPins, map);
     }
-
-    renderPins(filterPins, map);
+    else {
+      renderPins(pins, map);
+    }
   })
 }
 
