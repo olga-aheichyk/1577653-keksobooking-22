@@ -1,12 +1,9 @@
-import { map } from './map.js';
-
 /**
  * Функция отправления GET-запроса на сервер и обработки полученных данных
  * @param {function} onSuccess — функция обработки успешно полученных данных
  * @param {function} onError — функция, выполняющаяся при ошибке получения данных
  * @param {map} object — интерактивная карта, необходимая для обработки полученных данных
  */
-
 const getData = function (onSuccess, onError) {
   fetch ('https://22.javascript.pages.academy/keksobooking/data')
     .then((response) => {
@@ -17,9 +14,9 @@ const getData = function (onSuccess, onError) {
         onError('Данные о доступных объявлениях не могут быть загружены. Перезагрузите страницу или зайдите на сайт позже');
       }
     })
-    .then((ads) => {
-      onSuccess(ads, map);
-    })
+    .then(
+      onSuccess,
+    )
     .catch(() => {
       onError('Данные о доступных объявлениях не могут быть загружены. Перезагрузите страницу или зайдите на сайт позже');
     })

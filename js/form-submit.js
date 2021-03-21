@@ -31,7 +31,7 @@ const showSuccessMessageAfterFormSubmit = function() {
 /**
  * Функция отправления на сервер введенных пользователем данных после отправки формы
  */
-const formSubmitHandler = function () {
+const activateFormSubmitHandler = function () {
 
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -44,4 +44,4 @@ const formSubmitHandler = function () {
   });
 };
 
-export { formSubmitHandler };
+export { activateFormSubmitHandler };

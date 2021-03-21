@@ -6,7 +6,7 @@ import {makeInteractiveElementsInactive,
 
 const MAP_ZOOM = 9;
 const ADDRESS_DIGITS_AFTER_DECIMAL = 5;
-const PinParameters = {
+const PinParameter = {
   X: 51,
   Y: 51,
 };
@@ -40,8 +40,8 @@ L.tileLayer(
 
 const mainIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
-  iconSize: [PinParameters.X, PinParameters.Y],
-  iconAnchor: [(PinParameters.X) / 2, PinParameters.Y],
+  iconSize: [PinParameter.X, PinParameter.Y],
+  iconAnchor: [(PinParameter.X) / 2, PinParameter.Y],
 });
 
 const mainPin = L.marker({
@@ -66,7 +66,7 @@ mainPin.on('moveend', (evt) => {
 
 export { map,
   TokyoCenter,
-  PinParameters };
+  PinParameter };
 
 
 
