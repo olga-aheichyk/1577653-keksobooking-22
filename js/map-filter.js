@@ -69,22 +69,26 @@ const setHousingTypeChange = (cb) => {
 
 */
 
-import {renderPins} from './pins.js'
+import {renderPins, adPins} from './pins.js'
 
 
 const housingType = document.querySelector('#housing-type');
 let filterPins = [];
 
-const setHousingTypeChange = function (pins, map, adPin) {
+const setHousingTypeChange = function (pins, map) {
   housingType.addEventListener('change', function (evt) {
     if (evt.target.value !== 'any') {
-      adPin.remove();
+      adPins.forEach((adPin) => {
+        adPin.remove();
+      })
+      adPins.length = 0;
+      
       filterPins = [];
-      for (let i=0; i < pins.length; i++) {
-        if (pins[i].offer.type === evt.target.value) {
-          filterPins.push(pins[i]);
+      pins.forEach((pin) => {
+        if (pin.offer.type === evt.target.value) {
+          filterPins.push(pin);
         }
-      }
+      })
       renderPins(filterPins, map);
     }
     else {

@@ -1,7 +1,7 @@
 /* global L:readonly */
 import {createCardLayout} from './create-card-layout.js';
 import {PinParameter} from './map.js';
-// import {setHousingTypeChange} from './map-filter.js';
+
 
 const PINS_ON_MAP_COUNT = 10;
 
@@ -11,7 +11,8 @@ const PINS_ON_MAP_COUNT = 10;
   * @param {array} pins — массив объектов объявлений для создания пинов на карте
   */
 
-
+let adPin;
+let adPins = [];
 const renderPins = function (pins, map) {
   pins.slice(0, PINS_ON_MAP_COUNT)
     .forEach((pin) => {
@@ -21,7 +22,7 @@ const renderPins = function (pins, map) {
         iconAnchor: [(PinParameter.X) / 2, PinParameter.Y],
       });
 
-      const adPin = L.marker({
+      adPin = L.marker({
         lat: pin.location.lat,
         lng: pin.location.lng,
       },
@@ -38,12 +39,9 @@ const renderPins = function (pins, map) {
           },
         );
 
-      // setHousingTypeChange(pins, map, adPin);
+      adPins.push(adPin);
     })
-
-
-
 }
 
-export { renderPins };
+export { renderPins, adPins };
 

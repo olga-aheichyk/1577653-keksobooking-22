@@ -1,5 +1,3 @@
-// import { map } from './map.js';
-
 /**
  * Функция отправления GET-запроса на сервер и обработки полученных данных
  * @param {function} onSuccess — функция обработки успешно полученных данных
@@ -17,10 +15,7 @@ const getData = function (onSuccess, onError) {
       }
     })
     .then(
-      // (ads) => {
-      //   onSuccess(ads, map)
-      // },
-      onSuccess(),
+      onSuccess,
     )
     .catch(() => {
       onError('Данные о доступных объявлениях не могут быть загружены. Перезагрузите страницу или зайдите на сайт позже');
