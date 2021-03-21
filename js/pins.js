@@ -1,7 +1,7 @@
 /* global L:readonly */
 import {createCardLayout} from './create-card-layout.js';
 import {PinParameter} from './map.js';
-import {setHousingTypeChange} from './map-filter.js';
+// import {setHousingTypeChange} from './map-filter.js';
 
 const PINS_ON_MAP_COUNT = 10;
 
@@ -38,7 +38,7 @@ const renderPins = function (pins, map) {
           },
         );
 
-      setHousingTypeChange(pins, map, adPin);
+      // setHousingTypeChange(pins, map, adPin);
     })
 
 
