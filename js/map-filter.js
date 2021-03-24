@@ -1,100 +1,113 @@
-/*
-1. поменять getData,
-const ADS_ON_MAP_COUNT = 10,
-работаем с response.json() - sort, slice, filter
+/* global _:readonly */
+import { renderPins, adPins } from './pins.js';
 
-2. Фильтр тип жилья
-<select name="housing-type" id="housing-type" class="map__filter">
-  <option value="any" selected>Любой тип жилья</option>
-  <option value="palace">Дворец</option>
-  <option value="flat">Квартира</option>
-  <option value="house">Дом</option>
-  <option value="bungalow">Бунгало</option>
-</select>
-
-const housingType = document.querySelector('#housing-type');
-const selectedHousingTypeOption = document.querySelector('#housing-type option[selected]');
-
-housingType.addEventListener('change', function (evt) {
-  ads.filter((ad) => {
-    if (selectedHousingTypeOption.value !== 'any') {
-      ad.offer.type === selectedHousingTypeOption.value;
-    }
-    console.log()
-  })
-
-  закрыть открытый балун с объявлением???
-})
-
-
-const getAdRank = function (ad) {
-  const selectedHousingTypeOption = document.querySelector('#housing-type option[selected]');;
-
-  let rank = 0;
-
-  if (selectedHousingTypeOption.value !== 'any') {
-    if (ad.offer.type === selectedHousingTypeOption.value) {
-    rank += 1;
-    }
-  }
-  return rank;
-}
-
-const sortAds = (adA, adB) => {
-  const rankA = getAdRank(adA);
-  const rankB = getAdRank(adB);
-
-  return adB - adA;
-}
-
-ads.slice()
-.sort(sortAds)
-.slice(0, ADS_ON_MAP_COUNT)
-.forEach(({author, offer, location}) => {})
-
-
-Перед перерисовкой новых пинов нужно удалить старые:
-adPin.remove()
-.addTo(map)
-
-const setHousingTypeChange = (cb) => {
-
-  document.querySelector('#housing-type').addEventListener('change', (evt) => {
-
-    evt.target.value ???;
-
-    cb();
-  });
+const HousingPriceValue = {
+  MIDDLE: {
+    min: 10000,
+    max: 50000,
+  },
+  LOW: {
+    min: 0,
+    max: 10000,
+  },
+  HIGH: {
+    min: 50000,
+    max: 1000000,
+  },
+  ANY: {
+    min: 0,
+    max: 1000000,
+  },
 };
 
-*/
+const RERENDER_DELAY = 500;
 
-import {renderPins, adPins} from './pins.js'
-
+const mapFiltersForm = document.querySelector('.map__filters');
 
 const housingType = document.querySelector('#housing-type');
-let filterPins = [];
+const housingPrice = document.querySelector('#housing-price');
+const housingRooms = document.querySelector('#housing-rooms');
+const housingGuests = document.querySelector('#housing-guests');
 
-const setHousingTypeChange = function (pins, map) {
-  housingType.addEventListener('change', function (evt) {
-    if (evt.target.value !== 'any') {
-      adPins.forEach((adPin) => {
-        adPin.remove();
-      })
-      adPins.length = 0;
-      
-      filterPins = [];
-      pins.forEach((pin) => {
-        if (pin.offer.type === evt.target.value) {
-          filterPins.push(pin);
-        }
-      })
-      renderPins(filterPins, map);
-    }
-    else {
-      renderPins(pins, map);
-    }
+
+/**
+ * Функция проверки объявления по выбранному пользователем критерию типа жилья
+ * @param {object} object - объект объявления, полученный с сервера
+ * @return {boolean}
+ */
+const isSuitableHousingTypeOption = (object) => {
+  return housingType.value === 'any' ||  object.offer.type === housingType.value;
+};
+
+/**
+ * Функция проверки объявления по выбранному пользователем критерию цены за ночь
+ * @param {object} object - объект объявления, полученный с сервера
+ * @return {boolean}
+ */
+const isSuitableHousingPriceOption = (object) => {
+  const filterPriceMin = (HousingPriceValue[housingPrice.value.toUpperCase()].min);
+  const filterPriceMax = (HousingPriceValue[housingPrice.value.toUpperCase()].max);
+
+  return object.offer.price >= filterPriceMin && object.offer.price < filterPriceMax;
+};
+
+/**
+ * Функция проверки объявления по выбранному пользователем критерию количества комнат
+ * @param {object} object - объект объявления, полученный с сервера
+ * @return {boolean}
+ */
+const isSuitableHousingRoomsOption = (object) => {
+  return housingRooms.value === 'any' || object.offer.rooms === +housingRooms.value;
+};
+
+/**
+ * Функция проверки объявления по выбранному пользователем критерию количества гостей
+ * @param {object} object - объект объявления, полученный с сервера
+ * @return {boolean}
+ */
+const isSuitableHousingGuestsOption = (object) => {
+  return housingGuests.value === 'any' || object.offer.guests >= +housingGuests.value;
+}
+
+/**
+ * Функция проверки объявления по выбранным пользователем критериям удобств
+ * @param {array} checkedFeatures - массив удобств, выбранных пользователем
+ * @param {object} object - объект объявления, полученный с сервера
+ * @return {boolean}
+ */
+const areHousingFeaturesSuitable = (checkedFeatures, object) => {
+  const adFeatures = object.offer.features;
+  return checkedFeatures.every((checkedFeature) => {
+    return adFeatures.includes(checkedFeature.value);
   })
 }
 
-export {setHousingTypeChange}
+let filterPins = [];
+const setMapFiltersChange = (pins, map) => {
+
+  mapFiltersForm.addEventListener('change', _.debounce(() => {
+    adPins.forEach((adPin) => {
+      adPin.remove();
+    })
+    adPins.length = 0;
+
+    filterPins = [];
+    const checkedHousingFeatures = Array.from(document.querySelectorAll('.map__checkbox:checked'));
+
+    pins.forEach((pin) => {
+      if (isSuitableHousingTypeOption(pin)
+        && isSuitableHousingPriceOption(pin)
+        && isSuitableHousingRoomsOption(pin)
+        && isSuitableHousingGuestsOption(pin)
+        && areHousingFeaturesSuitable(checkedHousingFeatures, pin)
+      )
+      {
+        filterPins.push(pin);
+      }
+    })
+
+    renderPins(filterPins, map);
+  }, RERENDER_DELAY))
+}
+
+export { setMapFiltersChange }

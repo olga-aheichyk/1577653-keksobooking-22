@@ -10,7 +10,6 @@ const PINS_ON_MAP_COUNT = 10;
   * @param {object} map — объект, содержащий информацию об объявлении
   * @param {array} pins — массив объектов объявлений для создания пинов на карте
   */
-
 let adPin;
 let adPins = [];
 const renderPins = function (pins, map) {
