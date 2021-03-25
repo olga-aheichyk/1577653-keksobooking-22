@@ -99,7 +99,7 @@ const makeInteractiveElementsActive = function (object, className) {
   * Функция создания сообщения об ошибке
   * @param {string} message — текст сообщения об ошибке
   */
-const showAlert = function(message) {
+const showGetErrorAlert = function() {
   const adTitle = document.querySelector('.notice__title')
   const alertContainer = document.createElement('div');
   alertContainer.style.padding = '30px';
@@ -107,7 +107,7 @@ const showAlert = function(message) {
   alertContainer.style.textAlign = 'center';
   alertContainer.style.backgroundColor = 'red';
 
-  alertContainer.textContent = message;
+  alertContainer.textContent = 'Данные о доступных объявлениях не могут быть загружены. Перезагрузите страницу или зайдите на сайт позже';
 
   adTitle.append(alertContainer);
 
@@ -154,6 +154,6 @@ export { TokyoCenter,
   getRandomInteger, getRandomFloatingPointNumber,
   getRandomElementFromArray, makeRandomArray,
   makeInteractiveElementsInactive, makeInteractiveElementsActive,
-  showAlert,
+  showGetErrorAlert,
   closeMessage, clearFormAfterResetOrSubmit
 };

@@ -1,28 +1,23 @@
+const GET_URL = 'https://22.javascript.pages.academy/keksobooking/data';
+const POST_URL = 'https://22.javascript.pages.academy/keksobooking';
+
 /**
  * Функция отправления GET-запроса на сервер и обработки полученных данных
  * @param {function} onSuccess — функция обработки успешно полученных данных
  * @param {function} onError — функция, выполняющаяся при ошибке получения данных
- * @param {map} object — интерактивная карта, необходимая для обработки полученных данных
  */
-const getData = function (onSuccess, onError) {
-  fetch ('https://22.javascript.pages.academy/keksobooking/data')
+
+const getData = (onSuccess, onError) => {
+  fetch(GET_URL)
     .then((response) => {
       if (response.ok) {
         return response.json();
       }
-      else {
-        onError('Данные о доступных объявлениях не могут быть загружены. Перезагрузите страницу или зайдите на сайт позже');
-      }
-    })
-    .then(
-      onSuccess,
-    )
-    .catch(() => {
-      onError('Данные о доступных объявлениях не могут быть загружены. Перезагрузите страницу или зайдите на сайт позже');
+      throw new Error('Данные о доступных объявлениях не могут быть загружены');
     })
 
-  // при ошибке загрузки отрабатывают 2 onError - показывается сразу 2 сообщения об ошибке загрузки
-  // как сделать, чтобы срабатывало одно???
+    .then(onSuccess)
+    .catch(onError);
 }
 
 /**
@@ -31,9 +26,9 @@ const getData = function (onSuccess, onError) {
  * @param {function} onError — функция, выполняющаяся при ошибке отправки данных
  * @param {formData} object — введенные в форме пользовательские данные, которые необходимо отправить на сервер
  */
-const sendData = function (onSuccess, onError, formData) {
+const sendData = (onSuccess, onError, formData) => {
   fetch(
-    'https://22.javascript.pages.academy/keksobooking',
+    POST_URL,
     {
       method: 'POST',
       body: formData,
@@ -41,15 +36,11 @@ const sendData = function (onSuccess, onError, formData) {
   )
     .then((response) => {
       if (response.ok) {
-        onSuccess();
+        onSuccess;
       }
-      else {
-        onError();
-      }
+      throw new Error ('Данные, введённые пользователем, не могут быть переданы');
     })
-    .catch(() => {
-      onError();
-    })
-}
+    .catch(onError);
+};
 
 export { getData, sendData }
