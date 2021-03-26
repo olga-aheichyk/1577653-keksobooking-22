@@ -1,4 +1,7 @@
-
+import { renderPins } from './pins.js';
+import { rerenderPinsOnFilterChange } from './map-filter.js';
+import { showGetErrorAlert } from './util.js';
+import { map } from './map.js';
 
 const GET_URL = 'https://22.javascript.pages.academy/keksobooking/data';
 const POST_URL = 'https://22.javascript.pages.academy/keksobooking';
@@ -22,6 +25,15 @@ const getData = (onSuccess, onError) => {
     .catch(onError);
 }
 
+const initializePinsOnMap = () => {
+  getData(
+    (ads) => {
+      renderPins(ads, map);
+      rerenderPinsOnFilterChange(ads, map);
+    },
+    showGetErrorAlert,
+  );
+}
 
 
 /**
@@ -51,4 +63,4 @@ const sendData = (onSuccess, onError, formData) => {
     });
 };
 
-export { getData, sendData }
+export { initializePinsOnMap, sendData }
