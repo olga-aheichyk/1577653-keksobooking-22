@@ -11,7 +11,7 @@ let adPins = [];
   * @param {object} map — интерактивная карта
   * @param {array} pins — массив объектов объявлений для создания пинов на карте
   */
-const renderPins = function (pins, map) {
+const renderPins = (pins, map) => {
   pins.slice(0, PINS_ON_MAP_COUNT)
     .forEach((pin) => {
       const icon = L.icon({
@@ -41,5 +41,12 @@ const renderPins = function (pins, map) {
     })
 }
 
-export { renderPins, adPins };
+const removePins = () => {
+  adPins.forEach((adPin) => {
+    adPin.remove();
+  })
+  adPins.length = 0;
+}
+
+export { renderPins, removePins };
 

@@ -11,7 +11,6 @@ const POST_URL = 'https://22.javascript.pages.academy/keksobooking';
  * @param {function} onSuccess — функция обработки успешно полученных данных
  * @param {function} onError — функция, выполняющаяся при ошибке получения данных
  */
-
 const getData = (onSuccess, onError) => {
   fetch(GET_URL)
     .then((response) => {
@@ -25,6 +24,9 @@ const getData = (onSuccess, onError) => {
     .catch(onError);
 }
 
+/**
+ * Функция замыкания для отрисовки пинов на карте при успешном получении данных с сервера
+ */
 const initializePinsOnMap = () => {
   getData(
     (ads) => {
@@ -34,7 +36,6 @@ const initializePinsOnMap = () => {
     showGetErrorAlert,
   );
 }
-
 
 /**
  * Функция отправления POST-запроса на сервер для отправки введенных пользователем данных

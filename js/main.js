@@ -5,7 +5,6 @@ import { activateFormDataPostOnSubmit } from './form-submit.js';
 import { initializePinsOnMap } from './get-and-send-data.js';
 
 
-
 disableFilterAndFormBeforeInitialization();
 initializeMap();
 

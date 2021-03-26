@@ -1,5 +1,5 @@
 /* global _:readonly */
-import { renderPins, adPins } from './pins.js';
+import { renderPins, removePins } from './pins.js';
 
 const HousingPriceToRange = {
   MIDDLE: {
@@ -89,11 +89,7 @@ const areHousingFeaturesSuitable = (checkedFeatures, object) => {
 const rerenderPinsOnFilterChange = (pins, map) => {
 
   mapFiltersForm.addEventListener('change', _.debounce(() => {
-    adPins.forEach((adPin) => {
-      adPin.remove();
-    })
-    adPins.length = 0;
-
+    removePins();
     filterPins = [];
     const checkedHousingFeatures = Array.from(document.querySelectorAll('.map__checkbox:checked'));
 

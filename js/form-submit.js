@@ -2,6 +2,7 @@ import { sendData } from './get-and-send-data.js';
 import { closeMessage } from './util.js';
 import { resetMap } from './map.js';
 import { initializePinsOnMap } from './get-and-send-data.js';
+import { removePins } from './pins.js';
 
 const form = document.querySelector('.ad-form');
 
@@ -12,6 +13,7 @@ const clearFormAndMapFilterAfterResetOrSubmit = () => {
   document.querySelector('.ad-form').reset();
   document.querySelector('.map__filters').reset();
   resetMap();
+  removePins();
   initializePinsOnMap();
 }
 
