@@ -6,7 +6,7 @@ const ApartmentTypes = {
 }
 
 const isVoidElement = function (element) {
-  return element.length === 0 || element.src === null
+  return element.length === 0 || element.src === null;
 }
 
 /**
@@ -20,7 +20,6 @@ const createCardLayout = function({author, offer, location}) {
 
   const cardArticle = cardTemplateArticle.cloneNode(true);
 
-  // переделать remove при пустых значениях поля
   const articleAvatar = cardArticle.querySelector('.popup__avatar');
 
   if (isVoidElement(articleAvatar)) {
@@ -62,11 +61,6 @@ const createCardLayout = function({author, offer, location}) {
   else {
     articleFeatures.textContent = '';
     let featuresFragment = document.createDocumentFragment();
-
-    // let featuresHtmlLayout = offer.features
-    //   .map(item => `<li class="popup__feature popup__feature--${item}"></li>`)
-    //   .join('\n');
-    // articleFeatures.innerHTML = featuresHtmlLayout;
 
     offer.features.map((item) => {
       const liElement = document.createElement('li');

@@ -13,60 +13,89 @@ const PinParameter = {
 
 const adForm = document.querySelector('.ad-form');
 const mapFilter = document.querySelector('.map__filters');
-makeInteractiveElementsInactive(adForm, 'ad-form--disabled');
-makeInteractiveElementsInactive(mapFilter, 'map__filters--disabled');
-
 const inputAddress = adForm.querySelector('#address');
+let map;
+let mainPin;
 
-const map = L.map('map-canvas')
-  .on('load', () => {
-    makeInteractiveElementsActive(adForm, 'ad-form--disabled');
-    makeInteractiveElementsActive(mapFilter, 'map__filters--disabled');
-    inputAddress.value = `${TokyoCenter.X}, ${TokyoCenter.Y}`;
-  })
-  .setView({
+/**
+  * Функция деактивации интерактивных элементов формы и фильтра при успешной загрузке скрипта
+  */
+const disableFilterAndFormBeforeInitialization = () => {
+  makeInteractiveElementsInactive(adForm, 'ad-form--disabled');
+  makeInteractiveElementsInactive(mapFilter, 'map__filters--disabled');
+}
+
+/**
+  * Функция инициализации интерактивной карты и главного маркера на ней
+  */
+const initializeMap = () => {
+  map = L.map('map-canvas')
+    .on('load', () => {
+      makeInteractiveElementsActive(adForm, 'ad-form--disabled');
+      makeInteractiveElementsActive(mapFilter, 'map__filters--disabled');
+      inputAddress.value = `${TokyoCenter.X}, ${TokyoCenter.Y}`;
+    })
+    .setView({
+      lat: TokyoCenter.X,
+      lng: TokyoCenter.Y,
+    }, MAP_ZOOM);
+
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    })
+    .addTo(map);
+
+  const mainIcon = L.icon({
+    iconUrl: 'img/main-pin.svg',
+    iconSize: [PinParameter.X, PinParameter.Y],
+    iconAnchor: [(PinParameter.X) / 2, PinParameter.Y],
+  });
+
+  mainPin = L.marker({
     lat: TokyoCenter.X,
     lng: TokyoCenter.Y,
+  },
+  {
+    draggable: true,
+    icon: mainIcon,
+  },
+  );
+
+  mainPin.addTo(map);
+
+  mainPin.on('moveend', (evt) => {
+    inputAddress.value = `${evt.target.getLatLng().lat.toFixed(ADDRESS_DIGITS_AFTER_DECIMAL)},
+    ${evt.target.getLatLng().lng.toFixed(ADDRESS_DIGITS_AFTER_DECIMAL)}`;
+  });
+}
+
+/**
+  * Функция возвращения карты в исходное состояние
+  * @param {number} x — координата широты
+  * @param {number} y — координата долготы
+  */
+const resetMap = (x = TokyoCenter.X, y = TokyoCenter.Y) => {
+  map.setView({
+    lat: x,
+    lng: y,
   }, MAP_ZOOM);
 
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  })
-  .addTo(map);
+  mainPin.setLatLng([x, y]);
 
-// Ставим главный пин на карту
-
-const mainIcon = L.icon({
-  iconUrl: 'img/main-pin.svg',
-  iconSize: [PinParameter.X, PinParameter.Y],
-  iconAnchor: [(PinParameter.X) / 2, PinParameter.Y],
-});
-
-const mainPin = L.marker({
-  lat: TokyoCenter.X,
-  lng: TokyoCenter.Y,
-},
-{
-  draggable: true,
-  icon: mainIcon,
-},
-);
-
-mainPin.addTo(map);
-
-// При перемещении главного пина меняется значение поля ввода адреса
-
-mainPin.on('moveend', (evt) => {
-  inputAddress.value = `${evt.target.getLatLng().lat.toFixed(ADDRESS_DIGITS_AFTER_DECIMAL)},
-  ${evt.target.getLatLng().lng.toFixed(ADDRESS_DIGITS_AFTER_DECIMAL)}`;
-});
+  inputAddress.value = `${x}, ${y}`;
+}
 
 
-export { map,
-  TokyoCenter,
-  PinParameter };
+
+export {
+  disableFilterAndFormBeforeInitialization,
+  map,
+  initializeMap,
+  PinParameter,
+  resetMap
+};
 
 
 

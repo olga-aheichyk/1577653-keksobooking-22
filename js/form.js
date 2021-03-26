@@ -1,4 +1,4 @@
-import { clearFormAfterResetOrSubmit } from './util.js';
+import { form, clearFormAndMapFilterAfterResetOrSubmit } from './form-submit.js';
 
 const MinPricePerNight = {
   BUNGALOW: 0,
@@ -12,55 +12,60 @@ const TitleLength = {
   MAX: 100,
 };
 
-const RoomGuests = {
+const RoomGuestsIndexes = {
   1: [2],
   2: [1, 2],
   3: [0, 1, 2],
   100: [3],
 };
 
+const resetButton = form.querySelector('.ad-form__reset');
+const formSelectType = form.querySelector('#type');
+const formInputPrice = form.querySelector('#price');
+const selectTimeIn = form.querySelector('#timein');
+const selectTimeOut = form.querySelector('#timeout');
+const formInputTitle = form.querySelector('#title');
+const formSelectRoomNumber = form.querySelector('#room_number');
+const formSelectCapacityOptions = Array.from(form.querySelectorAll('#capacity option'));
+
+
 /**
  * Настройка работы кнопки 'Очистить форму'
  */
-const form = document.querySelector('.ad-form');
-const resetButton = document.querySelector('.ad-form__reset');
-
-resetButton.addEventListener('click', function (evt) {
+resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
-  clearFormAfterResetOrSubmit(form);
-})
+  clearFormAndMapFilterAfterResetOrSubmit();
+});
+
+/**
+ * Настройка запрета ручного редактирования поля ввода адреса
+ */
+form.querySelector('#address').setAttribute('readonly', 'readonly');
+
 
 /**
  *  Настройка зависимости цены за ночь от выбранного типа жилья
  */
-const formSelectType = document.querySelector('#type');
-const formInputPrice = document.querySelector('#price');
-
-formSelectType.addEventListener('change', function (evt) {
+formSelectType.addEventListener('change', (evt) => {
   formInputPrice.placeholder = MinPricePerNight[evt.target.value.toUpperCase()];
   formInputPrice.setAttribute('min', MinPricePerNight[evt.target.value.toUpperCase()]);
-})
+});
 
 /**
  *  Настройка синхронизации времени заезда и выезда
  */
-const selectTimeIn = document.querySelector('#timein');
-const selectTimeOut = document.querySelector('#timeout');
-
-selectTimeIn.addEventListener('change', function (evt) {
+selectTimeIn.addEventListener('change', (evt) => {
   selectTimeOut.value = evt.target.value;
 })
 
-selectTimeOut.addEventListener('change', function (evt) {
+selectTimeOut.addEventListener('change', (evt) => {
   selectTimeIn.value = evt.target.value;
 })
 
 /**
  *  Настройка валидации поля ввода заголовка объявления
  */
-const formInputTitle = document.querySelector('#title');
-
-formInputTitle.addEventListener('input', function () {
+formInputTitle.addEventListener('input', () => {
   const valueLength = formInputTitle.value.length;
 
   if (valueLength < TitleLength.MIN) {
@@ -81,7 +86,7 @@ formInputTitle.addEventListener('input', function () {
 /**
  *  Настройка валидации цены за ночь
  */
-formInputPrice.addEventListener('invalid', function () {
+formInputPrice.addEventListener('invalid', () => {
   if (formInputPrice.validity.rangeUnderflow) {
     formInputPrice.setCustomValidity(`Минимальная цена за ночь для такого типа жилья составляет ${formInputPrice.getAttribute('min')} рублей`);
   }
@@ -94,7 +99,7 @@ formInputPrice.addEventListener('invalid', function () {
     formInputPrice.setCustomValidity('Обязательное поле');
   }
 
-  formInputPrice.addEventListener('input', function () {
+  formInputPrice.addEventListener('input', () => {
     formInputPrice.setCustomValidity('');
   })
 });
@@ -102,16 +107,12 @@ formInputPrice.addEventListener('invalid', function () {
 /**
  *  Настройка зависимости возможного количества гостей от выбранного количества комнат
  */
-const formSelectRoomNumber = document.querySelector('#room_number');
-const formSelectCapacityOptions = document.querySelectorAll('#capacity option');
+formSelectRoomNumber.addEventListener('change', (evt) => {
+  formSelectCapacityOptions.forEach((option) => {
+    option.setAttribute('disabled', 'disabled');
+  })
 
-
-formSelectRoomNumber.addEventListener('change', function(evt) {
-  for (let i = 0; i < formSelectCapacityOptions.length; i++) {
-    formSelectCapacityOptions[i].setAttribute('disabled', 'disabled');
-  }
-
-  RoomGuests[evt.target.value].forEach((index) => {
+  RoomGuestsIndexes[evt.target.value].forEach((index) => {
     formSelectCapacityOptions[index].removeAttribute('disabled');
     formSelectCapacityOptions[index].removeAttribute('selected')
 
@@ -123,3 +124,20 @@ formSelectRoomNumber.addEventListener('change', function(evt) {
     }
   });
 });
+
+/**
+ *  Настройка выделения рамкой незаполненных обязательных полей ввода
+ */
+form.addEventListener('input', () => {
+  const invalidInputs = Array.from(form.querySelectorAll('input:invalid'));
+  const validInputs = Array.from(form.querySelectorAll('input:valid'));
+
+  invalidInputs.forEach((input) => {
+    input.style.border = '2px solid red'
+  });
+
+  validInputs.forEach((input) => {
+    input.style.border = 'none';
+  });
+});
+

@@ -1,3 +1,5 @@
+
+
 const GET_URL = 'https://22.javascript.pages.academy/keksobooking/data';
 const POST_URL = 'https://22.javascript.pages.academy/keksobooking';
 
@@ -20,6 +22,8 @@ const getData = (onSuccess, onError) => {
     .catch(onError);
 }
 
+
+
 /**
  * Функция отправления POST-запроса на сервер для отправки введенных пользователем данных
  * @param {function} onSuccess — функция обработки успешно отправленных данных
@@ -36,11 +40,15 @@ const sendData = (onSuccess, onError, formData) => {
   )
     .then((response) => {
       if (response.ok) {
-        onSuccess;
+        onSuccess();
       }
-      throw new Error ('Данные, введённые пользователем, не могут быть переданы');
+      else {
+        onError();
+      }
     })
-    .catch(onError);
+    .catch(() => {
+      onError()
+    });
 };
 
 export { getData, sendData }

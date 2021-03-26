@@ -1,7 +1,7 @@
 /* global _:readonly */
 import { renderPins, adPins } from './pins.js';
 
-const HousingPriceValue = {
+const HousingPriceToRange = {
   MIDDLE: {
     min: 10000,
     max: 50000,
@@ -21,13 +21,12 @@ const HousingPriceValue = {
 };
 
 const RERENDER_DELAY = 500;
-
 const mapFiltersForm = document.querySelector('.map__filters');
-
 const housingType = document.querySelector('#housing-type');
 const housingPrice = document.querySelector('#housing-price');
 const housingRooms = document.querySelector('#housing-rooms');
 const housingGuests = document.querySelector('#housing-guests');
+let filterPins = [];
 
 
 /**
@@ -45,8 +44,8 @@ const isSuitableHousingTypeOption = (object) => {
  * @return {boolean}
  */
 const isSuitableHousingPriceOption = (object) => {
-  const filterPriceMin = (HousingPriceValue[housingPrice.value.toUpperCase()].min);
-  const filterPriceMax = (HousingPriceValue[housingPrice.value.toUpperCase()].max);
+  const filterPriceMin = (HousingPriceToRange[housingPrice.value.toUpperCase()].min);
+  const filterPriceMax = (HousingPriceToRange[housingPrice.value.toUpperCase()].max);
 
   return object.offer.price >= filterPriceMin && object.offer.price < filterPriceMax;
 };
@@ -67,7 +66,7 @@ const isSuitableHousingRoomsOption = (object) => {
  */
 const isSuitableHousingGuestsOption = (object) => {
   return housingGuests.value === 'any' || object.offer.guests >= +housingGuests.value;
-}
+};
 
 /**
  * Функция проверки объявления по выбранным пользователем критериям удобств
@@ -79,11 +78,15 @@ const areHousingFeaturesSuitable = (checkedFeatures, object) => {
   const adFeatures = object.offer.features;
   return checkedFeatures.every((checkedFeature) => {
     return adFeatures.includes(checkedFeature.value);
-  })
-}
+  });
+};
 
-let filterPins = [];
-const setMapFiltersChange = (pins, map) => {
+/**
+ * Функция перерисовки пинов объявлений на карте при изменении значений фильтра
+ * @param {array} pins - массив объектов объявлений для создания пинов на карте
+ * @param {object} map - интерактивная карта
+ */
+const rerenderPinsOnFilterChange = (pins, map) => {
 
   mapFiltersForm.addEventListener('change', _.debounce(() => {
     adPins.forEach((adPin) => {
@@ -110,4 +113,4 @@ const setMapFiltersChange = (pins, map) => {
   }, RERENDER_DELAY))
 }
 
-export { setMapFiltersChange }
+export { rerenderPinsOnFilterChange }
