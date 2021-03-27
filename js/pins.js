@@ -1,18 +1,18 @@
 /* global L:readonly */
-import {createCardLayout} from './create-card-layout.js';
-import {PinParameter} from './map.js';
-
+import { createCardLayout } from './create-card-layout.js';
+import { PinParameter } from './map.js';
 
 const PINS_ON_MAP_COUNT = 10;
 
-/**
-  * Функция создания на карте пинов объявлениЙ, при клике на которые открывается всплывающая карточка отдельного объявления
-  * @param {object} map — объект, содержащий информацию об объявлении
-  * @param {array} pins — массив объектов объявлений для создания пинов на карте
-  */
 let adPin;
 let adPins = [];
-const renderPins = function (pins, map) {
+
+/**
+  * Функция создания на карте пинов объявлениЙ, при клике на которые открывается всплывающая карточка отдельного объявления
+  * @param {array} pins — массив объектов объявлений для создания пинов на карте
+  * @param {object} map — интерактивная карта
+  */
+const renderPins = (pins, map) => {
   pins.slice(0, PINS_ON_MAP_COUNT)
     .forEach((pin) => {
       const icon = L.icon({
@@ -42,5 +42,18 @@ const renderPins = function (pins, map) {
     })
 }
 
-export { renderPins, adPins };
+/**
+  * Функция удаления пинов объявлений
+  */
+const removePins = () => {
+  adPins.forEach((adPin) => {
+    adPin.remove();
+  })
+  adPins.length = 0;
+}
+
+export {
+  renderPins,
+  removePins
+};
 

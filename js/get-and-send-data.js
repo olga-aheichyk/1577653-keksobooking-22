@@ -1,3 +1,8 @@
+import { renderPins } from './pins.js';
+import { rerenderPinsOnFilterChange } from './map-filter.js';
+import { showGetErrorAlert } from './util.js';
+import { map } from './map.js';
+
 const GET_URL = 'https://22.javascript.pages.academy/keksobooking/data';
 const POST_URL = 'https://22.javascript.pages.academy/keksobooking';
 
@@ -6,7 +11,6 @@ const POST_URL = 'https://22.javascript.pages.academy/keksobooking';
  * @param {function} onSuccess — функция обработки успешно полученных данных
  * @param {function} onError — функция, выполняющаяся при ошибке получения данных
  */
-
 const getData = (onSuccess, onError) => {
   fetch(GET_URL)
     .then((response) => {
@@ -18,6 +22,19 @@ const getData = (onSuccess, onError) => {
 
     .then(onSuccess)
     .catch(onError);
+}
+
+/**
+ * Функция замыкания для отрисовки пинов на карте при успешном получении данных с сервера
+ */
+const initializePinsOnMap = () => {
+  getData(
+    (ads) => {
+      renderPins(ads, map);
+      rerenderPinsOnFilterChange(ads, map);
+    },
+    showGetErrorAlert,
+  );
 }
 
 /**
@@ -36,11 +53,18 @@ const sendData = (onSuccess, onError, formData) => {
   )
     .then((response) => {
       if (response.ok) {
-        onSuccess;
+        onSuccess();
       }
-      throw new Error ('Данные, введённые пользователем, не могут быть переданы');
+      else {
+        onError();
+      }
     })
-    .catch(onError);
+    .catch(() => {
+      onError()
+    });
 };
 
-export { getData, sendData }
+export {
+  initializePinsOnMap,
+  sendData
+};

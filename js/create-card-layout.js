@@ -1,26 +1,23 @@
+import { isVoidElement } from './util.js';
+
 const ApartmentTypes = {
   PALACE: 'Дворец',
   FLAT: 'Квартира',
   HOUSE: 'Дом',
   BUNGALOW: 'Бунгало',
-}
-
-const isVoidElement = function (element) {
-  return element.length === 0 || element.src === null
-}
+};
 
 /**
  * Функция создания DOM-элемента тестовой карточки объявления из объекта
  * @param {object} — объект тестовой карточки объявления
  * @return {object} — DOM-элемент тестовой карточки объявления
  */
-const createCardLayout = function({author, offer, location}) {
+const createCardLayout = ({author, offer, location}) => {
   const cardTemplate = document.querySelector('#card').content;
   const cardTemplateArticle = cardTemplate.querySelector('article');
 
   const cardArticle = cardTemplateArticle.cloneNode(true);
 
-  // переделать remove при пустых значениях поля
   const articleAvatar = cardArticle.querySelector('.popup__avatar');
 
   if (isVoidElement(articleAvatar)) {
@@ -30,7 +27,7 @@ const createCardLayout = function({author, offer, location}) {
     articleAvatar.src = author.avatar;
   }
 
-  const articleTitle=cardArticle.querySelector('.popup__title');
+  const articleTitle = cardArticle.querySelector('.popup__title');
 
   if (isVoidElement(articleTitle)) {
     articleTitle.remove();
@@ -62,11 +59,6 @@ const createCardLayout = function({author, offer, location}) {
   else {
     articleFeatures.textContent = '';
     let featuresFragment = document.createDocumentFragment();
-
-    // let featuresHtmlLayout = offer.features
-    //   .map(item => `<li class="popup__feature popup__feature--${item}"></li>`)
-    //   .join('\n');
-    // articleFeatures.innerHTML = featuresHtmlLayout;
 
     offer.features.map((item) => {
       const liElement = document.createElement('li');
@@ -103,4 +95,4 @@ const createCardLayout = function({author, offer, location}) {
   return cardArticle;
 }
 
-export { createCardLayout }
+export { createCardLayout };

@@ -1,21 +1,17 @@
-import './form.js';
-import './form-submit.js';
-import { renderPins } from './pins.js';
-import { map } from './map.js';
-import { getData } from './get-and-send-data.js';
-import { showGetErrorAlert } from './util.js';
-import { activateFormSubmitHandler } from './form-submit.js';
-import { setMapFiltersChange } from './map-filter.js';
-// import './map-filter.js'
+import './form-setting.js';
+
+import {
+  disableFilterAndFormBeforeInitialization,
+  initializeMap
+} from './map.js';
+
+import { initializePinsOnMap } from './get-and-send-data.js';
+import { activateFormDataPostOnSubmit } from './form-submit.js';
 
 
-getData(
-  (ads) => {
-    renderPins(ads, map);
-    setMapFiltersChange(ads, map);
-  },
-  showGetErrorAlert,
-);
+disableFilterAndFormBeforeInitialization();
+initializeMap();
 
+initializePinsOnMap();
 
-activateFormSubmitHandler();
+activateFormDataPostOnSubmit();
