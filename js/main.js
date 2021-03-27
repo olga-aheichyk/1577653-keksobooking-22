@@ -1,8 +1,12 @@
-import './form.js';
-import './form-submit.js';
-import { disableFilterAndFormBeforeInitialization, initializeMap } from './map.js';
-import { activateFormDataPostOnSubmit } from './form-submit.js';
+import './form-setting.js';
+
+import {
+  disableFilterAndFormBeforeInitialization,
+  initializeMap
+} from './map.js';
+
 import { initializePinsOnMap } from './get-and-send-data.js';
+import { activateFormDataPostOnSubmit } from './form-submit.js';
 
 
 disableFilterAndFormBeforeInitialization();

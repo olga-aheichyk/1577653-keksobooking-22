@@ -64,4 +64,7 @@ const sendData = (onSuccess, onError, formData) => {
     });
 };
 
-export { initializePinsOnMap, sendData }
+export {
+  initializePinsOnMap,
+  sendData
+};

@@ -1,11 +1,16 @@
 /* global L:readonly */
 import {makeInteractiveElementsInactive,
-  makeInteractiveElementsActive,
-  TokyoCenter} from './util.js';
+  makeInteractiveElementsActive} from './util.js';
 
 
-const MAP_ZOOM = 9;
+const MAP_ZOOM = 10;
 const ADDRESS_DIGITS_AFTER_DECIMAL = 5;
+
+const TokyoCenter = {
+  X: 35.6894,
+  Y: 139.692,
+};
+
 const PinParameter = {
   X: 51,
   Y: 51,
@@ -14,6 +19,7 @@ const PinParameter = {
 const adForm = document.querySelector('.ad-form');
 const mapFilter = document.querySelector('.map__filters');
 const inputAddress = adForm.querySelector('#address');
+
 let map;
 let mainPin;
 
@@ -90,10 +96,10 @@ const resetMap = (x = TokyoCenter.X, y = TokyoCenter.Y) => {
 
 
 export {
-  disableFilterAndFormBeforeInitialization,
-  map,
-  initializeMap,
   PinParameter,
+  map,
+  disableFilterAndFormBeforeInitialization,
+  initializeMap,
   resetMap
 };
 

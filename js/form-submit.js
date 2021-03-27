@@ -5,12 +5,13 @@ import { initializePinsOnMap } from './get-and-send-data.js';
 import { removePins } from './pins.js';
 
 const form = document.querySelector('.ad-form');
+const MESSAGE_Z_INDEX = 1000;
 
 /**
  * Функция очистки полей ввода и выбранных фильтров (после успешной отправки формы или нажатия на кнопку "Очистить форму")
  */
 const clearFormAndMapFilterAfterResetOrSubmit = () => {
-  document.querySelector('.ad-form').reset();
+  form.reset();
   document.querySelector('.map__filters').reset();
   resetMap();
   removePins();
@@ -24,6 +25,7 @@ const showErrorMessageAfterFormSubmit = () => {
   const errorTemplate = document.querySelector('#error').content;
   const errorMessageLayout = errorTemplate.querySelector('.error');
   const errorMessage = errorMessageLayout.cloneNode(true);
+  errorMessage.style.zIndex = MESSAGE_Z_INDEX;
 
   document.querySelector('main').appendChild(errorMessage);
   closeMessage(errorMessage);
@@ -36,6 +38,7 @@ const showSuccessMessageAfterFormSubmit = () => {
   const successTemplate = document.querySelector('#success').content;
   const successMessageLayout = successTemplate.querySelector('.success');
   const successMessage = successMessageLayout.cloneNode(true);
+  successMessage.style.zIndex = MESSAGE_Z_INDEX;
 
   document.querySelector('main').appendChild(successMessage);
   closeMessage(successMessage);
@@ -43,7 +46,7 @@ const showSuccessMessageAfterFormSubmit = () => {
 }
 
 /**
- * Функция отправления на сервер введенных пользователем данных после отправки формы
+ * Функция отправки на сервер введенных пользователем данных
  */
 const activateFormDataPostOnSubmit = () => {
 

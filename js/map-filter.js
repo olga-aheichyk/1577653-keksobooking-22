@@ -1,5 +1,10 @@
 /* global _:readonly */
-import { renderPins, removePins } from './pins.js';
+import {
+  renderPins,
+  removePins
+} from './pins.js';
+
+const RERENDER_DELAY = 500;
 
 const HousingPriceToRange = {
   MIDDLE: {
@@ -20,13 +25,13 @@ const HousingPriceToRange = {
   },
 };
 
-const RERENDER_DELAY = 500;
 const mapFiltersForm = document.querySelector('.map__filters');
-const housingType = document.querySelector('#housing-type');
-const housingPrice = document.querySelector('#housing-price');
-const housingRooms = document.querySelector('#housing-rooms');
-const housingGuests = document.querySelector('#housing-guests');
-let filterPins = [];
+const housingType = mapFiltersForm.querySelector('#housing-type');
+const housingPrice = mapFiltersForm.querySelector('#housing-price');
+const housingRooms = mapFiltersForm.querySelector('#housing-rooms');
+const housingGuests = mapFiltersForm.querySelector('#housing-guests');
+
+let filterPins;
 
 
 /**

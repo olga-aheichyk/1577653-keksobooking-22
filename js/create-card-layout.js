@@ -1,20 +1,18 @@
+import { isVoidElement } from './util.js';
+
 const ApartmentTypes = {
   PALACE: 'Дворец',
   FLAT: 'Квартира',
   HOUSE: 'Дом',
   BUNGALOW: 'Бунгало',
-}
-
-const isVoidElement = function (element) {
-  return element.length === 0 || element.src === null;
-}
+};
 
 /**
  * Функция создания DOM-элемента тестовой карточки объявления из объекта
  * @param {object} — объект тестовой карточки объявления
  * @return {object} — DOM-элемент тестовой карточки объявления
  */
-const createCardLayout = function({author, offer, location}) {
+const createCardLayout = ({author, offer, location}) => {
   const cardTemplate = document.querySelector('#card').content;
   const cardTemplateArticle = cardTemplate.querySelector('article');
 
@@ -29,7 +27,7 @@ const createCardLayout = function({author, offer, location}) {
     articleAvatar.src = author.avatar;
   }
 
-  const articleTitle=cardArticle.querySelector('.popup__title');
+  const articleTitle = cardArticle.querySelector('.popup__title');
 
   if (isVoidElement(articleTitle)) {
     articleTitle.remove();
@@ -97,4 +95,4 @@ const createCardLayout = function({author, offer, location}) {
   return cardArticle;
 }
 
-export { createCardLayout }
+export { createCardLayout };

@@ -1,4 +1,7 @@
-import { form, clearFormAndMapFilterAfterResetOrSubmit } from './form-submit.js';
+import {
+  form,
+  clearFormAndMapFilterAfterResetOrSubmit
+} from './form-submit.js';
 
 const MinPricePerNight = {
   BUNGALOW: 0,
@@ -19,7 +22,7 @@ const RoomGuestsIndexes = {
   100: [3],
 };
 
-const resetButton = form.querySelector('.ad-form__reset');
+
 const formSelectType = form.querySelector('#type');
 const formInputPrice = form.querySelector('#price');
 const selectTimeIn = form.querySelector('#timein');
@@ -27,15 +30,8 @@ const selectTimeOut = form.querySelector('#timeout');
 const formInputTitle = form.querySelector('#title');
 const formSelectRoomNumber = form.querySelector('#room_number');
 const formSelectCapacityOptions = Array.from(form.querySelectorAll('#capacity option'));
+const resetButton = form.querySelector('.ad-form__reset');
 
-
-/**
- * Настройка работы кнопки 'Очистить форму'
- */
-resetButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  clearFormAndMapFilterAfterResetOrSubmit();
-});
 
 /**
  * Настройка запрета ручного редактирования поля ввода адреса
@@ -101,23 +97,36 @@ formInputPrice.addEventListener('invalid', () => {
 
   formInputPrice.addEventListener('input', () => {
     formInputPrice.setCustomValidity('');
-  })
+  });
 });
+
+/**
+ *  Функция деактивации поля выбора количества комнат до выбора пользователем количества гостей
+ */
+const disableAlternativeSelectCapacityOptions = () => {
+  formSelectCapacityOptions.forEach((option) => {
+    option.setAttribute('disabled', 'disabled');
+  });
+  formSelectCapacityOptions[2].removeAttribute('disabled');
+  formSelectCapacityOptions[2].setAttribute('selected', 'selected');
+};
+
+disableAlternativeSelectCapacityOptions();
 
 /**
  *  Настройка зависимости возможного количества гостей от выбранного количества комнат
  */
 formSelectRoomNumber.addEventListener('change', (evt) => {
-  formSelectCapacityOptions.forEach((option) => {
-    option.setAttribute('disabled', 'disabled');
-  })
+  disableAlternativeSelectCapacityOptions();
 
   RoomGuestsIndexes[evt.target.value].forEach((index) => {
     formSelectCapacityOptions[index].removeAttribute('disabled');
-    formSelectCapacityOptions[index].removeAttribute('selected')
+    formSelectCapacityOptions[index].removeAttribute('selected');
 
     if (index === 3) {
       formSelectCapacityOptions[index].setAttribute('selected', 'selected');
+      formSelectCapacityOptions[2].removeAttribute('selected');
+      formSelectCapacityOptions[2].setAttribute('disabled', 'disabled');
     }
     else {
       formSelectCapacityOptions[2].setAttribute('selected', 'selected');
@@ -126,7 +135,7 @@ formSelectRoomNumber.addEventListener('change', (evt) => {
 });
 
 /**
- *  Настройка выделения рамкой незаполненных обязательных полей ввода
+ *  Настройка выделения рамкой невалидных обязательных полей ввода при вводе данных в форму
  */
 form.addEventListener('input', () => {
   const invalidInputs = Array.from(form.querySelectorAll('input:invalid'));
@@ -140,4 +149,13 @@ form.addEventListener('input', () => {
     input.style.border = 'none';
   });
 });
+
+/**
+ * Настройка работы кнопки 'Очистить форму'
+ */
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  clearFormAndMapFilterAfterResetOrSubmit();
+});
+
 
