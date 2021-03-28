@@ -7,15 +7,15 @@ const ApartmentTypes = {
   BUNGALOW: 'Бунгало',
 };
 
+const cardTemplate = document.querySelector('#card').content;
+const cardTemplateArticle = cardTemplate.querySelector('article');
+
 /**
  * Функция создания DOM-элемента тестовой карточки объявления из объекта
  * @param {object} — объект тестовой карточки объявления
  * @return {object} — DOM-элемент тестовой карточки объявления
  */
 const createCardLayout = ({author, offer, location}) => {
-  const cardTemplate = document.querySelector('#card').content;
-  const cardTemplateArticle = cardTemplate.querySelector('article');
-
   const cardArticle = cardTemplateArticle.cloneNode(true);
 
   const articleAvatar = cardArticle.querySelector('.popup__avatar');

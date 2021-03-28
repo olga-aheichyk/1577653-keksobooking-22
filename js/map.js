@@ -1,6 +1,10 @@
 /* global L:readonly */
-import {makeInteractiveElementsInactive,
-  makeInteractiveElementsActive} from './util.js';
+import {
+  makeInteractiveElementsInactive,
+  makeInteractiveElementsActive
+} from './util.js';
+
+import { initializePinsOnMap } from './get-and-send-data.js';
 
 
 const MAP_ZOOM = 10;
@@ -29,17 +33,18 @@ let mainPin;
 const disableFilterAndFormBeforeInitialization = () => {
   makeInteractiveElementsInactive(adForm, 'ad-form--disabled');
   makeInteractiveElementsInactive(mapFilter, 'map__filters--disabled');
-}
+};
 
 /**
-  * Функция инициализации интерактивной карты и главного маркера на ней
+  * Функция инициализации интерактивной карты и отрисовки пинов объявлений на ней
   */
-const initializeMap = () => {
+const initializeMapAndPins = () => {
   map = L.map('map-canvas')
     .on('load', () => {
       makeInteractiveElementsActive(adForm, 'ad-form--disabled');
       makeInteractiveElementsActive(mapFilter, 'map__filters--disabled');
       inputAddress.value = `${TokyoCenter.X}, ${TokyoCenter.Y}`;
+      initializePinsOnMap();
     })
     .setView({
       lat: TokyoCenter.X,
@@ -99,7 +104,7 @@ export {
   PinParameter,
   map,
   disableFilterAndFormBeforeInitialization,
-  initializeMap,
+  initializeMapAndPins,
   resetMap
 };
 

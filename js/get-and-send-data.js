@@ -14,14 +14,14 @@ const POST_URL = 'https://22.javascript.pages.academy/keksobooking';
 const getData = (onSuccess, onError) => {
   fetch(GET_URL)
     .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error('Данные о доступных объявлениях не могут быть загружены');
+      return response.json();
     })
-
-    .then(onSuccess)
-    .catch(onError);
+    .then((ads) => {
+      onSuccess(ads);
+    })
+    .catch(() => {
+      onError();
+    });
 }
 
 /**
@@ -60,7 +60,7 @@ const sendData = (onSuccess, onError, formData) => {
       }
     })
     .catch(() => {
-      onError()
+      onError();
     });
 };
 

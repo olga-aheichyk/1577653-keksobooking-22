@@ -1,5 +1,6 @@
 /* global _:readonly */
 import {
+  PINS_ON_MAP_COUNT,
   renderPins,
   removePins
 } from './pins.js';
@@ -87,6 +88,20 @@ const areHousingFeaturesSuitable = (checkedFeatures, object) => {
 };
 
 /**
+ * Функция проверки объявления по всем фильтрам
+ * @param {object} object - объект объявления, полученный с сервера
+ * @param {array} checkedFeatures - массив удобств, выбранных пользователем
+ * @return {boolean}
+ */
+const isObjectSuitable = (object, checkedFeatures) => {
+  return isSuitableHousingTypeOption(object)
+  && isSuitableHousingPriceOption(object)
+  && isSuitableHousingRoomsOption(object)
+  && isSuitableHousingGuestsOption(object)
+  && areHousingFeaturesSuitable(checkedFeatures, object);
+};
+
+/**
  * Функция перерисовки пинов объявлений на карте при изменении значений фильтра
  * @param {array} pins - массив объектов объявлений для создания пинов на карте
  * @param {object} map - интерактивная карта
@@ -99,14 +114,11 @@ const rerenderPinsOnFilterChange = (pins, map) => {
     const checkedHousingFeatures = Array.from(document.querySelectorAll('.map__checkbox:checked'));
 
     pins.forEach((pin) => {
-      if (isSuitableHousingTypeOption(pin)
-        && isSuitableHousingPriceOption(pin)
-        && isSuitableHousingRoomsOption(pin)
-        && isSuitableHousingGuestsOption(pin)
-        && areHousingFeaturesSuitable(checkedHousingFeatures, pin)
-      )
-      {
+      if (isObjectSuitable(pin, checkedHousingFeatures)) {
         filterPins.push(pin);
+        if (filterPins.length === PINS_ON_MAP_COUNT) {
+          return filterPins;
+        }
       }
     })
 

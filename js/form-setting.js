@@ -36,7 +36,7 @@ const resetButton = form.querySelector('.ad-form__reset');
 /**
  * Настройка запрета ручного редактирования поля ввода адреса
  */
-form.querySelector('#address').setAttribute('readonly', 'readonly');
+form.querySelector('#address').readOnly = true;
 
 
 /**
@@ -44,7 +44,7 @@ form.querySelector('#address').setAttribute('readonly', 'readonly');
  */
 formSelectType.addEventListener('change', (evt) => {
   formInputPrice.placeholder = MinPricePerNight[evt.target.value.toUpperCase()];
-  formInputPrice.setAttribute('min', MinPricePerNight[evt.target.value.toUpperCase()]);
+  formInputPrice.min = MinPricePerNight[evt.target.value.toUpperCase()];
 });
 
 /**
@@ -105,10 +105,10 @@ formInputPrice.addEventListener('invalid', () => {
  */
 const disableAlternativeSelectCapacityOptions = () => {
   formSelectCapacityOptions.forEach((option) => {
-    option.setAttribute('disabled', 'disabled');
+    option.disabled = true;
   });
-  formSelectCapacityOptions[2].removeAttribute('disabled');
-  formSelectCapacityOptions[2].setAttribute('selected', 'selected');
+  formSelectCapacityOptions[2].disabled = false;
+  formSelectCapacityOptions[2].selected = true;
 };
 
 disableAlternativeSelectCapacityOptions();
@@ -120,16 +120,16 @@ formSelectRoomNumber.addEventListener('change', (evt) => {
   disableAlternativeSelectCapacityOptions();
 
   RoomGuestsIndexes[evt.target.value].forEach((index) => {
-    formSelectCapacityOptions[index].removeAttribute('disabled');
-    formSelectCapacityOptions[index].removeAttribute('selected');
+    formSelectCapacityOptions[index].disabled = false;
+    formSelectCapacityOptions[index].selected = false;
 
     if (index === 3) {
-      formSelectCapacityOptions[index].setAttribute('selected', 'selected');
-      formSelectCapacityOptions[2].removeAttribute('selected');
-      formSelectCapacityOptions[2].setAttribute('disabled', 'disabled');
+      formSelectCapacityOptions[index].selected = true;
+      formSelectCapacityOptions[2].selected = false;
+      formSelectCapacityOptions[2].disabled = true;
     }
     else {
-      formSelectCapacityOptions[2].setAttribute('selected', 'selected');
+      formSelectCapacityOptions[2].selected = true;
     }
   });
 });
@@ -157,5 +157,7 @@ resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   clearFormAndMapFilterAfterResetOrSubmit();
 });
+
+export { disableAlternativeSelectCapacityOptions }
 
 

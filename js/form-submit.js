@@ -3,9 +3,15 @@ import { closeMessage } from './util.js';
 import { resetMap } from './map.js';
 import { initializePinsOnMap } from './get-and-send-data.js';
 import { removePins } from './pins.js';
+import { disableAlternativeSelectCapacityOptions } from './form-setting.js';
 
-const form = document.querySelector('.ad-form');
 const MESSAGE_Z_INDEX = 1000;
+
+const errorTemplate = document.querySelector('#error').content;
+const errorMessageLayout = errorTemplate.querySelector('.error');
+const successTemplate = document.querySelector('#success').content;
+const successMessageLayout = successTemplate.querySelector('.success');
+const form = document.querySelector('.ad-form');
 
 /**
  * Функция очистки полей ввода и выбранных фильтров (после успешной отправки формы или нажатия на кнопку "Очистить форму")
@@ -13,6 +19,9 @@ const MESSAGE_Z_INDEX = 1000;
 const clearFormAndMapFilterAfterResetOrSubmit = () => {
   form.reset();
   document.querySelector('.map__filters').reset();
+  disableAlternativeSelectCapacityOptions();
+  form.querySelector('#price').placeholder = 1000;
+  form.querySelector('#price').min = 1000;
   resetMap();
   removePins();
   initializePinsOnMap();
@@ -22,8 +31,6 @@ const clearFormAndMapFilterAfterResetOrSubmit = () => {
  * Функция показа сообщения об ошибке отправке формы
  */
 const showErrorMessageAfterFormSubmit = () => {
-  const errorTemplate = document.querySelector('#error').content;
-  const errorMessageLayout = errorTemplate.querySelector('.error');
   const errorMessage = errorMessageLayout.cloneNode(true);
   errorMessage.style.zIndex = MESSAGE_Z_INDEX;
 
@@ -35,8 +42,6 @@ const showErrorMessageAfterFormSubmit = () => {
  * Функция показа сообщения об успешной отправке формы и последующей очистке полей ввода
  */
 const showSuccessMessageAfterFormSubmit = () => {
-  const successTemplate = document.querySelector('#success').content;
-  const successMessageLayout = successTemplate.querySelector('.success');
   const successMessage = successMessageLayout.cloneNode(true);
   successMessage.style.zIndex = MESSAGE_Z_INDEX;
 

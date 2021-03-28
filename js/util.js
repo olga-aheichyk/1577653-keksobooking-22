@@ -11,7 +11,7 @@ const makeInteractiveElementsInactive = (object, className) => {
 
   let interactiveElements = Array.from(object.elements);
   interactiveElements.forEach((item) => {
-    item.setAttribute('disabled', 'disabled');
+    item.disabled = true;
   });
 };
 
@@ -26,7 +26,7 @@ const makeInteractiveElementsActive = (object, className) => {
 
   let interactiveElements = Array.from(object.elements);
   interactiveElements.forEach((item) => {
-    item.removeAttribute('disabled');
+    item.disabled = false;
   });
 };
 
@@ -75,10 +75,11 @@ const closeMessage = (message) => {
   document.addEventListener('keydown', (evt) => {
     if (isEscEvent(evt)) {
       message.remove();
+      document.removeEventListener('keydown', closeMessage(message));
     }
   });
 
-  document.addEventListener('click', () => {
+  message.addEventListener('click', () => {
     message.remove();
   });
 };

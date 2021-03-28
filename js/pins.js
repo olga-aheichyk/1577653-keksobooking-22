@@ -53,6 +53,7 @@ const removePins = () => {
 }
 
 export {
+  PINS_ON_MAP_COUNT,
   renderPins,
   removePins
 };
