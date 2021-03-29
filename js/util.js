@@ -1,4 +1,6 @@
 const ALERT_SHOW_TIME = 5000;
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
 
 /**
  * Функция перевода интерактивных элементов объекта в неактивное состояние
@@ -84,10 +86,37 @@ const closeMessage = (message) => {
   });
 };
 
+/**
+  * Функция проверки, является ли указанный файл изображением
+  * @param {string} fileName — имя файла
+  * @return {boolean}
+  */
+const isPhoto = (fileName) => {
+  return FILE_TYPES.some((item) => {
+    return fileName.endsWith(item);
+  });
+};
+
+/**
+  * Функция создания DOM-элемента изображения
+  * @param {object} imageParameter — параметры создаваемого изображения
+  * @param {string} alt — атрибут alt у создаваемого DOM-элемента
+  * @return {object} — DOM-элемент изображения
+  */
+const createImage = (imageParameter, alt) => {
+  const image = document.createElement('img');
+  image.alt = alt;
+  image.width = imageParameter.WIDTH;
+  image.height = imageParameter.HEIGHT;
+  return image;
+};
+
 export {
   makeInteractiveElementsInactive,
   makeInteractiveElementsActive,
   isVoidElement,
   showGetErrorAlert,
-  closeMessage
+  closeMessage,
+  isPhoto,
+  createImage
 };

@@ -4,6 +4,7 @@ import { resetMap } from './map.js';
 import { initializePinsOnMap } from './get-and-send-data.js';
 import { removePins } from './pins.js';
 import { disableAlternativeSelectCapacityOptions } from './form-setting.js';
+import { clearAdPhotoPreview, clearAvatarPreview } from './photo-upload.js';
 
 const MESSAGE_Z_INDEX = 1000;
 
@@ -18,6 +19,8 @@ const form = document.querySelector('.ad-form');
  */
 const clearFormAndMapFilterAfterResetOrSubmit = () => {
   form.reset();
+  clearAvatarPreview();
+  clearAdPhotoPreview();
   document.querySelector('.map__filters').reset();
   disableAlternativeSelectCapacityOptions();
   form.querySelector('#price').placeholder = 1000;

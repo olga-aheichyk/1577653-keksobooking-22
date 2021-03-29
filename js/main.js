@@ -1,4 +1,5 @@
 import './form-setting.js';
+import './photo-upload.js';
 
 import {
   disableFilterAndFormBeforeInitialization,
