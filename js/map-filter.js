@@ -113,14 +113,14 @@ const rerenderPinsOnFilterChange = (pins, map) => {
     filterPins = [];
     const checkedHousingFeatures = Array.from(document.querySelectorAll('.map__checkbox:checked'));
 
-    pins.forEach((pin) => {
-      if (isObjectSuitable(pin, checkedHousingFeatures)) {
-        filterPins.push(pin);
-        if (filterPins.length === PINS_ON_MAP_COUNT) {
-          return filterPins;
+    for (let i = 0; i < pins.length; i++) {
+      if (isObjectSuitable(pins[i], checkedHousingFeatures)) {
+        filterPins.push(pins[i]);
+        if (filterPins.length >= PINS_ON_MAP_COUNT) {
+          break;
         }
       }
-    })
+    }
 
     renderPins(filterPins, map);
   }, RERENDER_DELAY))
