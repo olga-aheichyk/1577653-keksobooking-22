@@ -1,4 +1,6 @@
-/* global L:readonly */
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
 import { createCardLayout } from './create-card-layout.js';
 import { PinParameter } from './map.js';
 

@@ -64,7 +64,6 @@ adPhotoInput.addEventListener('change', (evt) => {
   clearAdPhotoPreview();
   adPhotoPreviewBlock.appendChild(adPhotoPreview);
 
-
   if (isPhoto(fileName)) {
     const reader = new FileReader();
 
